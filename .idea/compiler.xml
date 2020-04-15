@@ -2,6 +2,14 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="blog.commonMain" target="1.8" />
+      <module name="blog.commonTest" target="1.8" />
+      <module name="blog.dataMain" target="1.8" />
+      <module name="blog.dataTest" target="1.8" />
+      <module name="blog.main" target="1.8" />
+      <module name="blog.test" target="1.8" />
+      <module name="blog.webMain" target="1.8" />
+      <module name="blog.webTest" target="1.8" />
       <module name="untitled.main" target="1.8" />
       <module name="untitled.test" target="1.8" />
     </bytecodeTargetLevel>
