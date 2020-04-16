@@ -28,10 +28,9 @@ dependencies {
 
     compile("io.ktor:ktor-server-core:1.3.2")
     compile("io.ktor:ktor-server-jetty:1.3.2")
+    compile("io.ktor:ktor-auth-jwt:1.3.2")
 
-//    compile("org.hibernate:hibernate-gradle-plugin:5.4.1.Final")
     compile("com.h2database:h2:1.4.200")
-//    compile("org.reflections:reflections:0.9.11")
 
     compile("org.jetbrains.exposed", "exposed-core", "0.23.1")
     compile("org.jetbrains.exposed", "exposed-dao", "0.23.1")
