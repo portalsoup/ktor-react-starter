@@ -32,7 +32,7 @@ dependencies {
     compile("io.ktor:ktor-auth-jwt:1.3.2")
     compile("io.ktor:ktor-gson:1.3.2")
 
-    compile("com.h2database:h2:1.4.200")
+    compile("org.postgresql:postgresql:9.4.1208")
 
     compile("org.jetbrains.exposed", "exposed-core", "0.23.1")
     compile("org.jetbrains.exposed", "exposed-dao", "0.23.1")
@@ -55,7 +55,7 @@ compileTestKotlin.kotlinOptions {
 }
 
 flyway {
-    url = "jdbc:h2:./database/app"
-    user = "tour"
-    password = ""
+    url = "jdbc:postgresql://db/pgdb"
+    user = "bikes"
+    password = "tour"
 }

@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.portalsoup.ktorexposed.api.resources.SignupResource
 import com.portalsoup.ktorexposed.core.JwtConfig
 import com.portalsoup.ktorexposed.core.SecurePassword
-import com.portalsoup.ktorexposed.entity.User
+import com.portalsoup.ktorexposed.entity.Traveler
 import com.portalsoup.ktorexposed.service.checkAuth
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -14,7 +14,6 @@ import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.UserPasswordCredential
 import io.ktor.auth.authenticate
-import io.ktor.auth.authentication
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
 import io.ktor.features.CallLogging
@@ -76,7 +75,7 @@ fun Application.main() {
             val securePassword = SecurePassword(signupResource.password)
 
             transaction {
-                val inserted = User.insert {
+                val inserted = Traveler.insert {
                     it[email] = signupResource.email
                     it[passwordHash] = securePassword.hashPassword().toString()
                     it[passwordSalt] = securePassword.userSalt.toString()

@@ -1,11 +1,11 @@
 package com.portalsoup.ktorexposed.api.resources
 
-import com.portalsoup.ktorexposed.entity.User
+import com.portalsoup.ktorexposed.entity.Traveler
 import io.ktor.auth.Principal
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 
-data class UserAuth(
+data class TravelerAuth(
     val id: EntityID<Int>,
     val email: String,
     val passwordHash: String,
@@ -13,6 +13,6 @@ data class UserAuth(
 ) : Principal
 
 // Resource mapping functions
-fun ResultRow.toUserAuth(): UserAuth = UserAuth(this[User.id], this[User.email], this[User.passwordHash], this[User.passwordSalt].toByteArray())
+fun ResultRow.toUserAuth(): TravelerAuth = TravelerAuth(this[Traveler.id], this[Traveler.email], this[Traveler.passwordHash], this[Traveler.passwordSalt].toByteArray())
 
 data class SignupResource(val email: String, val password: String)

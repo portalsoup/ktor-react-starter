@@ -1,6 +1,6 @@
 package com.portalsoup.ktorexposed
 
-import com.portalsoup.ktorexposed.entity.User
+import com.portalsoup.ktorexposed.entity.Traveler
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
@@ -12,15 +12,15 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseFactory {
 
-    val dataSource = "jdbc:h2:./database/app"
+    val dataSource = "jdbc:postgresql://db/pgdb"
 
     fun init(config: AppConfig) {
-        val flyway = Flyway.configure().dataSource(DatabaseFactory.dataSource, config.db.username, null).load()
+        val flyway = Flyway.configure().dataSource(DatabaseFactory.dataSource, config.db.username, config.db.password).load()
         migrateFlyway(flyway)
 
         Database.connect(hikari(config))
         transaction {
-            create(User)
+            create(Traveler)
         }
     }
 
@@ -28,9 +28,9 @@ object DatabaseFactory {
 
     private fun hikari(appConfig: AppConfig): HikariDataSource {
         val config = HikariConfig()
-        config.driverClassName = "org.h2.Driver"
+        config.driverClassName = "org.postgresql.Driver"
         config.jdbcUrl = dataSource
-        config.maximumPoolSize = 3
+        config.maximumPoolSize = 32
         config.isAutoCommit = false
         config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
         config.username = appConfig.db.username

@@ -1,9 +1,9 @@
 package com.portalsoup.ktorexposed.service
 
-import com.portalsoup.ktorexposed.api.resources.UserAuth
+import com.portalsoup.ktorexposed.api.resources.TravelerAuth
 import com.portalsoup.ktorexposed.api.resources.toUserAuth
 import com.portalsoup.ktorexposed.core.SecurePassword
-import com.portalsoup.ktorexposed.entity.User
+import com.portalsoup.ktorexposed.entity.Traveler
 import io.ktor.auth.UserPasswordCredential
 import org.jetbrains.exposed.sql.select
 
@@ -38,9 +38,9 @@ import org.jetbrains.exposed.sql.select
 //    }
 //}
 
-fun checkAuth(credentials: UserPasswordCredential): UserAuth? {
-    val foundUser = User
-        .select { User.email eq credentials.name }
+fun checkAuth(credentials: UserPasswordCredential): TravelerAuth? {
+    val foundUser = Traveler
+        .select { Traveler.email eq credentials.name }
         .single()
         .toUserAuth()
     val generatedHash = SecurePassword(rawPassword = credentials.password, userSalt = foundUser.passwordSalt)

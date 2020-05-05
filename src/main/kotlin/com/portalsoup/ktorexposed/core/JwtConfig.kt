@@ -3,8 +3,7 @@ package com.portalsoup.ktorexposed.core
 
 import com.auth0.jwt.*
 import com.auth0.jwt.algorithms.*
-import com.portalsoup.ktorexposed.api.resources.UserAuth
-import com.portalsoup.ktorexposed.entity.User
+import com.portalsoup.ktorexposed.api.resources.TravelerAuth
 import java.util.*
 
 object JwtConfig {
@@ -22,7 +21,7 @@ object JwtConfig {
     /**
      * Produce a token for this combination of User and Account
      */
-    fun makeToken(user: UserAuth): String = JWT.create()
+    fun makeToken(user: TravelerAuth): String = JWT.create()
         .withSubject("Authentication")
         .withIssuer(issuer)
         .withClaim("password", user.passwordHash)
