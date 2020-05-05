@@ -14,11 +14,11 @@ object DatabaseFactory {
 
     val dataSource = "jdbc:h2:./database/app"
 
-    fun init() {
-        val flyway = Flyway.configure().dataSource(DatabaseFactory.dataSource, "tour", null).load()
+    fun init(config: AppConfig) {
+        val flyway = Flyway.configure().dataSource(DatabaseFactory.dataSource, config.db.username, null).load()
         migrateFlyway(flyway)
 
-        Database.connect(hikari())
+        Database.connect(hikari(config))
         transaction {
             create(User)
         }
@@ -26,14 +26,15 @@ object DatabaseFactory {
 
     suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction { block() }
 
-    private fun hikari(): HikariDataSource {
+    private fun hikari(appConfig: AppConfig): HikariDataSource {
         val config = HikariConfig()
         config.driverClassName = "org.h2.Driver"
         config.jdbcUrl = dataSource
         config.maximumPoolSize = 3
         config.isAutoCommit = false
         config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-        config.username = "tour"
+        config.username = appConfig.db.username
+        config.password = appConfig.db.password
         config.validate()
         return HikariDataSource(config)
     }
