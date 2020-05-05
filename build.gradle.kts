@@ -9,6 +9,7 @@ plugins {
     application
     java
     kotlin("jvm") version "1.3.70"
+    id("org.flywaydb.flyway") version "6.4.0"
 }
 
 application {
@@ -38,6 +39,8 @@ dependencies {
     compile("org.jetbrains.exposed", "exposed-jdbc", "0.23.1")
     compile("com.zaxxer:HikariCP:2.7.8")
 
+    compile("org.flywaydb:flyway-core:6.4.0")
+
 //    compile("org.koin:koin-core:2.0.0-GA2")
 //    testCompile("org.koin:koin-test:2.0.0-GA2")
 }
@@ -49,4 +52,10 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
+}
+
+flyway {
+    url = "jdbc:h2:./database/app"
+    user = "tour"
+    password = ""
 }
