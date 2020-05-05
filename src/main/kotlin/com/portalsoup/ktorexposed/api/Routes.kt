@@ -13,20 +13,29 @@ import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.UserPasswordCredential
+import io.ktor.auth.authenticate
+import io.ktor.auth.authentication
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
+import io.ktor.features.CallLogging
+import io.ktor.features.ContentNegotiation
+import io.ktor.gson.gson
 import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
+import io.ktor.routing.route
 import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
-import kotlin.math.sign
 
 
 fun Application.main() {
+    install(CallLogging)
+    install(ContentNegotiation) { gson { } }
+
     routing {
 
 
@@ -67,27 +76,37 @@ fun Application.main() {
             val securePassword = SecurePassword(signupResource.password)
 
             transaction {
-                User.insert {
+                val inserted = User.insert {
                     it[email] = signupResource.email
                     it[passwordHash] = securePassword.hashPassword().toString()
                     it[passwordSalt] = securePassword.userSalt.toString()
                 }
+                println(inserted)
             }
+            call.respondText("Done", ContentType.Text.Plain, HttpStatusCode.OK)
         }
 
         post("login") {
             val credentials: UserPasswordCredential = call.receive()
-            val user = checkAuth(credentials)
+            val user = transaction {
+              checkAuth(credentials)
+            }
 
             if (user != null) {
                 val token = JwtConfig.makeToken(user)
                 call.respondText(token)
+            } else {
+                call.respondText("failed.", ContentType.Text.Plain, HttpStatusCode.Forbidden)
             }
         }
 
 
-//        authenticate {
-//            route("")
-//        }
+        authenticate {
+            route("secret") {
+                get {
+
+                }
+            }
+        }
     }
 }

@@ -29,6 +29,7 @@ dependencies {
     compile("io.ktor:ktor-server-core:1.3.2")
     compile("io.ktor:ktor-server-jetty:1.3.2")
     compile("io.ktor:ktor-auth-jwt:1.3.2")
+    compile("io.ktor:ktor-gson:1.3.2")
 
     compile("com.h2database:h2:1.4.200")
 
