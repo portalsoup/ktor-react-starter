@@ -1,4 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     extra.apply {
         set("koin_version", "")
@@ -27,8 +29,8 @@ dependencies {
     testCompile("junit:junit:4.12")
     compile("ch.qos.logback:logback-classic:1.2.3")
 
-    compile("io.ktor:ktor-server-core:1.3.2")
-    compile("io.ktor:ktor-server-jetty:1.3.2")
+//    compile("io.ktor:ktor-server-core:1.3.2")
+    compile("io.ktor:ktor-server-netty:1.3.2")
     compile("io.ktor:ktor-auth-jwt:1.3.2")
     compile("io.ktor:ktor-gson:1.3.2")
 
@@ -52,6 +54,12 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
+}
+
+kotlin {
+    experimental {
+        coroutines = Coroutines.ENABLE
+    }
 }
 
 flyway {

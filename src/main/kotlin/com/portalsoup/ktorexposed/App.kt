@@ -3,7 +3,7 @@ package com.portalsoup.ktorexposed
 import com.google.gson.Gson
 import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.jetty.Jetty
+import io.ktor.server.netty.Netty
 import java.io.File
 import java.lang.RuntimeException
 import java.net.URL
@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
 
     DatabaseFactory.init(config)
 
-    embeddedServer(Jetty, commandLineEnvironment(args)).start(wait = true)
+    embeddedServer(Netty, commandLineEnvironment(args)).start(wait = true)
 }
 
 private fun getConfig(): AppConfig {
