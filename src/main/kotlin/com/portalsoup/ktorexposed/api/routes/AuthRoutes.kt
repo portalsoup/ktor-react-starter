@@ -26,32 +26,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 fun Application.authRoutes() {
     routing {
-        // Setup
-        val jwtIssuer = "com.portalsoup"
-        val jwtAudience = "whatthefuckamilol"
-
-        val algorithm = Algorithm.HMAC256("secret")
-        fun makeJwtVerifier(issuer: String, audience: String): JWTVerifier = JWT
-            .require(algorithm)
-//            .withAudience(audience) // figure this out later, should just be the app server's url?
-            .withIssuer(issuer)
-            .build()
-
-        install(Authentication) {
-            jwt {
-                realm = jwtIssuer
-                verifier(makeJwtVerifier(jwtIssuer, jwtIssuer))
-                validate { credential ->
-                    if (credential.payload.audience.contains(jwtAudience)) {
-                        JWTPrincipal(credential.payload)
-                    } else {
-                        println(credential.payload.audience.joinToString("\n"))
-                        null
-                    }
-                }
-            }
-        }
-
         // Status
 
         post("signup") {
