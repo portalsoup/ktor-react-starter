@@ -1,4 +1,4 @@
-package com.portalsoup.ktorexposed.api
+package com.portalsoup.ktorexposed.api.routes
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
@@ -13,31 +13,19 @@ import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.UserPasswordCredential
-import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.gson.gson
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respondText
-import io.ktor.routing.get
 import io.ktor.routing.post
-import io.ktor.routing.route
 import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 
-
-fun Application.main() {
-    install(CallLogging)
-    install(ContentNegotiation) { gson { } }
-
+fun Application.authRoutes() {
     routing {
-
-
         // Setup
         val jwtIssuer = "com.portalsoup"
         val jwtAudience = "whatthefuckamilol"
@@ -65,9 +53,6 @@ fun Application.main() {
         }
 
         // Status
-        get("/status/healthcheck") {
-            call.respondText("Yes, I live!", ContentType.Text.Plain)
-        }
 
         post("signup") {
             println("entered closure")
@@ -88,7 +73,7 @@ fun Application.main() {
         post("login") {
             val credentials: UserPasswordCredential = call.receive()
             val user = transaction {
-              checkAuth(credentials)
+                checkAuth(credentials)
             }
 
             if (user != null) {
@@ -96,15 +81,6 @@ fun Application.main() {
                 call.respondText(token)
             } else {
                 call.respondText("failed.", ContentType.Text.Plain, HttpStatusCode.Forbidden)
-            }
-        }
-
-
-        authenticate {
-            route("secret") {
-                get {
-
-                }
             }
         }
     }
