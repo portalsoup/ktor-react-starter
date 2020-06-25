@@ -4,12 +4,13 @@ package com.portalsoup.ktorexposed.core
 import com.auth0.jwt.*
 import com.auth0.jwt.algorithms.*
 import com.portalsoup.ktorexposed.api.resources.TravelerAuth
+import io.ktor.auth.jwt.JWTAuthenticationProvider
 import java.util.*
 
 object JwtConfig {
 
     private const val secret = "zAP5MBA4B4Ijz0MZaS48"
-    private const val issuer = "ktor.io"
+    internal const val issuer = "ktor.io"
     private const val validityInMs = 36_000_00 * 10 // 10 hours
     private val algorithm = Algorithm.HMAC512(secret)
 
@@ -24,7 +25,7 @@ object JwtConfig {
     fun makeToken(user: TravelerAuth): String = JWT.create()
         .withSubject("Authentication")
         .withIssuer(issuer)
-        .withClaim("password", user.passwordHash)
+        .withClaim("email", user.email)
         .withExpiresAt(getExpiration())
         .sign(algorithm)
 

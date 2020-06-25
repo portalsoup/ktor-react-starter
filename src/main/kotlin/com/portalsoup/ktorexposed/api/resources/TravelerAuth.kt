@@ -9,10 +9,10 @@ data class TravelerAuth(
     val id: EntityID<Int>,
     val email: String,
     val passwordHash: String,
-    val passwordSalt: ByteArray
+    val passwordSalt: String
 ) : Principal
 
 // Resource mapping functions
-fun ResultRow.toUserAuth(): TravelerAuth = TravelerAuth(this[Traveler.id], this[Traveler.email], this[Traveler.passwordHash], this[Traveler.passwordSalt].toByteArray())
+fun ResultRow.toUserAuth(): TravelerAuth = TravelerAuth(this[Traveler.id], this[Traveler.email], this[Traveler.passwordHash], this[Traveler.passwordSalt])
 
 data class SignupResource(val email: String, val password: String)

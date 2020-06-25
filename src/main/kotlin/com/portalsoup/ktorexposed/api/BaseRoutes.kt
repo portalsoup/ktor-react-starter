@@ -3,8 +3,11 @@ package com.portalsoup.ktorexposed.api
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import com.portalsoup.ktorexposed.api.routes.healthcheckRoutes
-import com.portalsoup.ktorexposed.api.routes.authRoutes
+import com.portalsoup.ktorexposed.api.routes.authedHealthcheck
+import com.portalsoup.ktorexposed.api.routes.healthcheck
+import com.portalsoup.ktorexposed.api.routes.login
+import com.portalsoup.ktorexposed.api.routes.signup
+import com.portalsoup.ktorexposed.core.JwtConfig
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.auth.Authentication
@@ -12,7 +15,9 @@ import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
+import io.ktor.features.DefaultHeaders
 import io.ktor.gson.gson
+import io.ktor.routing.Routing
 import io.ktor.routing.routing
 
 fun Application.main() {
@@ -21,33 +26,45 @@ fun Application.main() {
     val jwtAudience = "whatthefuckamilol"
 
     val algorithm = Algorithm.HMAC256("secret")
-    fun makeJwtVerifier(issuer: String, audience: String): JWTVerifier = JWT
-        .require(algorithm)
-//            .withAudience(audience) // figure this out later, should just be the app server's url?
-        .withIssuer(issuer)
-        .build()
 
 
     install(CallLogging)
+    install(DefaultHeaders)
     install(ContentNegotiation) { gson { } }
     install(Authentication) {
-        jwt {
-            realm = jwtIssuer
-            verifier(makeJwtVerifier(jwtIssuer, jwtIssuer))
-            validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) {
-                    JWTPrincipal(credential.payload)
-                } else {
-                    println(credential.payload.audience.joinToString("\n"))
-                    null
+        jwt { verifier(JwtConfig.verifier)
+            realm = JwtConfig.issuer
+            validate {
+                with(it.payload) {
+                    val email = getClaim("email").isNull
+                    if (email)
+                        null
+                    else
+                        JWTPrincipal(it.payload)
                 }
             }
         }
+//        jwt {
+//            verifier(makeJwtVerifier(jwtIssuer, jwtIssuer))
+//            realm = jwtIssuer
+//            validate {
+//                with(it.payload) {
+//                    val login = getClaim("login").isNull
+//                    val id = getClaim("id").isNull
+//                    if (login || id)
+//                        null
+//                    else
+//                        JWTPrincipal(it.payload)
+//                }
+//            }
+//        }
     }
 
-    routing {
-        application.healthcheckRoutes()
-        application.authRoutes()
+    install(Routing) {
+        login()
+        signup()
+        healthcheck()
+        authedHealthcheck()
     }
 }
 

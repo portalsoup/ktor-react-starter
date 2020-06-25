@@ -1,30 +1,32 @@
 package com.portalsoup.ktorexposed.core
 
+import com.portalsoup.ktorexposed.service.toHexString
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
+import javax.xml.bind.DatatypeConverter
 
 class SecurePassword(
     private val rawPassword: String,
-    val userSalt: ByteArray = generateSalt(32),
+    val userSalt: String = generateSalt(32),
     private val appSalt: ByteArray = "iAmAbAdApPsAlT".toByteArray()
 ) {
     companion object {
-        fun generateSalt(length: Int): ByteArray {
+        fun generateSalt(length: Int): String {
             val salt = ByteArray(length)
             SecureRandom().nextBytes(salt)
-            return salt
+            return DatatypeConverter.printHexBinary(salt)
         }
     }
 
-    fun hashPassword(): ByteArray {
+    fun hashPassword(): String {
         try {
             val keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
-            val spec = PBEKeySpec(rawPassword.toCharArray(), userSalt, 10, 32)
-            val key = keyFactory.generateSecret(spec) // Unexpected crash happened here. Keep an eye out.
-            return key.encoded
+            val spec = PBEKeySpec(rawPassword.toCharArray(), userSalt.toByteArray(), 10, 32)
+            val key = keyFactory.generateSecret(spec)
+            return DatatypeConverter.printHexBinary(key.encoded)
         } catch (e: NoSuchAlgorithmException) {
             throw RuntimeException(e)
         } catch (e: InvalidKeySpecException) {

@@ -39,14 +39,20 @@ import org.jetbrains.exposed.sql.select
 //}
 
 fun checkAuth(credentials: UserPasswordCredential): TravelerAuth? {
-    val foundUser = Traveler
+    val rawUser = Traveler
         .select { Traveler.email eq credentials.name }
         .single()
-        .toUserAuth()
+
+//    println("this is the one ${rawUser}")
+    val foundUser = rawUser.toUserAuth()
     val generatedHash = SecurePassword(rawPassword = credentials.password, userSalt = foundUser.passwordSalt)
-    return if (generatedHash.hashPassword().contentEquals(foundUser.passwordHash.toByteArray())) {
+    println("the salt ${foundUser.passwordSalt}")
+    println("generated hash ${generatedHash.hashPassword()} existing hash ${foundUser.passwordHash}")
+    return if (generatedHash.hashPassword().contentEquals(foundUser.passwordHash)) {
         foundUser
     } else {
         null
     }
 }
+
+fun ByteArray.toHexString() = asUByteArray().joinToString("") { it.toString(16).padStart(2, '0') }
