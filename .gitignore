@@ -1,3 +1,5 @@
 /.gradle/
 /build/
 /database
+/client/build/
+/client/node_modules/
