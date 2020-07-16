@@ -1,0 +1,7 @@
+.postFrame {
+    position: center;
+    box-shadow: 5px 5px 5px 5px #222222;
+    margin: auto;
+    width: 85%;
+    text-align: center;
+}

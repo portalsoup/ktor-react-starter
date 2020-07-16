@@ -8,10 +8,21 @@ services:
     - .:/tour
     networks:
       - server
+      - client
     ports:
-      - "8080:8080"
+      - "8081:8080"
     depends_on:
       - db
+  client:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.client
+    ports:
+      - "80:80"
+    volumes:
+      - ./client:/client
+    networks:
+      - client
   db:
     image: postgres:alpine
     ports:
@@ -29,3 +40,4 @@ volumes:
   vdata: {}
 networks:
   server:
+  client:

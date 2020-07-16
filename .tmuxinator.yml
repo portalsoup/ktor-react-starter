@@ -7,5 +7,5 @@ windows:
       panes:
         - start # see bashaliases.sh
         - # cd client && npm run watch
-        - watch -d --color -n 5 "git log --color --format='%C(auto,blue)%h%C(auto,reset) %C(auto,green)%an%C(auto,reset) %<(40,trunc)%s'"
-        - watch -n 1 -d --color docker ps
+`        - watch -d --color -n 5 "git log --color --format='%C(auto,blue)%h%C(auto,reset) %C(auto,green)%an%C(auto,reset) %<(40,trunc)%s'"
+`        - watch -n 1 -d --color docker ps

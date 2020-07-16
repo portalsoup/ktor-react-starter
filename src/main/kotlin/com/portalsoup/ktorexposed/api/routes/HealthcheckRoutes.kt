@@ -17,7 +17,9 @@ fun Route.healthcheck() {
 }
 
 fun Route.authedHealthcheck() {
-    get("authed/healthcheck") {
-        call.respondText("So logged in!", ContentType.Text.Plain)
+    authenticate {
+        get("authed/healthcheck") {
+            call.respondText("So logged in!", ContentType.Text.Plain)
+        }
     }
 }

@@ -56,12 +56,6 @@ compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
 }
 
-kotlin {
-    experimental {
-        coroutines = Coroutines.ENABLE
-    }
-}
-
 flyway {
     url = "jdbc:postgresql://db/pgdb"
     user = "bikes"
