@@ -18,8 +18,8 @@ class LoginForm extends Component {
 
     handleSignIn(e) {
         e.preventDefault();
-        let username = this.refs.username.value;
-        let password = this.refs.password.value;
+        const username = this.refs.username.value;
+        const password = this.refs.password.value;
         this.props.onLogIn(username, password)
     }
 

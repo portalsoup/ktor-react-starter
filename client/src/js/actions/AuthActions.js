@@ -3,7 +3,7 @@ import axios from 'axios';
 export function onSignUp(email, password) {
     console.log(`credential received ${email} ${password}`);
     return (dispatch) => {
-        return fetch(`http://localhost:8080/api/v1/sign-up`, {
+        return fetch(`http://localhost:8080/sign-up`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export function onSignUp(email, password) {
 export function onLogIn(email, password) {
     console.log(`credential received ${email} ${password}`);
     return (dispatch) => {
-        return fetch(`http://localhost:8080/api/v1/sign-in`, {
+        return fetch(`http://localhost:8080/sign-in`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export function getCurrentUser() {
     console.log(`getting current user`);
     return (dispatch) => {
 
-        axios.get(`http://localhost:8080/api/v1/current-user`, {
+        axios.get(`http://localhost:8080/authed/healthcheck`, {
             // headers
         },{
             // axios configs

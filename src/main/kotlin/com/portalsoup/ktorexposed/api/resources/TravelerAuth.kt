@@ -15,4 +15,4 @@ data class TravelerAuth(
 // Resource mapping functions
 fun ResultRow.toUserAuth(): TravelerAuth = TravelerAuth(this[Traveler.id], this[Traveler.email], this[Traveler.passwordHash], this[Traveler.passwordSalt])
 
-data class SignupResource(val email: String, val password: String)
+data class TravelerAuthResource(val email: String, val password: String)

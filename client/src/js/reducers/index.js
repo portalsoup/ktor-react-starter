@@ -1,4 +1,5 @@
 import {GET_POSTS, GET_ROUTE} from "../constants/action-types";
+import compose from 'redux'
 
 const initialState = {
     currentRoute: [],

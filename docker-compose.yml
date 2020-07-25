@@ -20,7 +20,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./client:/client
+      - ./client/build:/client
     networks:
       - client
   db:

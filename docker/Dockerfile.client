@@ -1,15 +1,9 @@
-FROM httpd:2.4-alpine
+FROM nginx:1.19.1-alpine
 
 RUN apk add --update nodejs-npm
 
 COPY client/ /client
 
-RUN cd /client \
-    && rm -rf /usr/local/apache2/htdocs \
-    && ln -s /client/build /usr/local/apache2/htdocs \
-    && rm -f /usr/local/apache2/conf/httpd.conf \
-    && ln -s /client/httpd.conf /usr/local/apache2/conf/httpd.conf \
-    && npm ci \
-    && npm run dev
+RUN rm -rf /usr/share/nginx/html
 
-ENTRYPOINT httpd-foreground
+RUN ln -s /client /usr/share/nginx/html
