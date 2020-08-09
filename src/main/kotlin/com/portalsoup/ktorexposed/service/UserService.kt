@@ -5,7 +5,6 @@ import com.portalsoup.ktorexposed.api.resources.TravelerAuthResource
 import com.portalsoup.ktorexposed.api.resources.toUserAuth
 import com.portalsoup.ktorexposed.core.SecurePassword
 import com.portalsoup.ktorexposed.entity.Traveler
-import io.ktor.auth.UserPasswordCredential
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 

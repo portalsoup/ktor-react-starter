@@ -19,9 +19,9 @@ object DatabaseFactory {
         migrateFlyway(flyway)
 
         Database.connect(hikari(config))
-        transaction {
-            create(Traveler)
-        }
+//        transaction {
+//            create(Traveler)
+//        }
     }
 
     suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction { block() }
@@ -41,8 +41,8 @@ object DatabaseFactory {
 
     fun migrateFlyway(flyway: Flyway, runAgain: Boolean = true) {
         try {
-            flyway.validate()
             flyway.migrate()
+            flyway.validate()
         } catch (e: FlywayException) {
             flyway.repair()
             if (runAgain) {

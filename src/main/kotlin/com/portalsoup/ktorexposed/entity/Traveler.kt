@@ -1,6 +1,5 @@
 package com.portalsoup.ktorexposed.entity
 
-import io.ktor.auth.Principal
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object Traveler : IntIdTable() {

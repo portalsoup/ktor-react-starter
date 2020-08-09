@@ -85,6 +85,7 @@ fun Application.main() {
         signup()
         healthcheck()
         authedHealthcheck()
+        coordinates()
 
 
         route("/test") {

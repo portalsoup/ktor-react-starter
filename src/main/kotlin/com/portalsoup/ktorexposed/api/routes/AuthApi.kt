@@ -1,17 +1,14 @@
 package com.portalsoup.ktorexposed.api.routes
 
-import com.portalsoup.ktorexposed.api.MySession
 import com.portalsoup.ktorexposed.api.resources.TravelerAuthResource
 import com.portalsoup.ktorexposed.core.JwtConfig
 import com.portalsoup.ktorexposed.core.SecurePassword
 import com.portalsoup.ktorexposed.entity.Traveler
 import com.portalsoup.ktorexposed.service.checkAuth
 import io.ktor.application.call
-import io.ktor.auth.UserPasswordCredential
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
-import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.post
