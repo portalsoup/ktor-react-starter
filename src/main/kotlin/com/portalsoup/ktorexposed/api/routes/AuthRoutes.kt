@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.api.MySession
 import com.portalsoup.ktorexposed.api.resources.TravelerAuthResource
 import com.portalsoup.ktorexposed.core.JwtConfig
 import com.portalsoup.ktorexposed.core.SecurePassword
@@ -14,6 +15,7 @@ import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.post
+import io.ktor.sessions.sessions
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -58,7 +60,7 @@ fun Route.login() {
 
         if (user != null) {
             val token = JwtConfig.makeToken(user)
-            call.respond(token)
+            call.sessions.set("jwt", token)
         } else {
             call.respondText("failed.", ContentType.Text.Plain, HttpStatusCode.Forbidden)
         }
