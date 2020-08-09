@@ -7,10 +7,19 @@ function start() {
     docker-compose stop && docker-compose build && docker-compose up -d && docker-compose logs -f
 }
 
-function startDetached() {
-    docker-compose -f $TOURING_HOME/docker-compose.yml up -d
+function restart() {
+  docker-compose stop
+  docker-compose build
+  docker-compose up
+  docker-compose logs -f
 }
 
+function restartServer() {
+  docker-compose stop server
+  docker-compose build server
+  docker-compose up -d server
+  docker-compose logs -f
+}
 
 # Attempt to stop all running docker containers
 function dockerStopAll {

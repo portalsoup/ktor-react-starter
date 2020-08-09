@@ -6,6 +6,7 @@ import com.portalsoup.ktorexposed.api.resources.toUserAuth
 import com.portalsoup.ktorexposed.core.SecurePassword
 import com.portalsoup.ktorexposed.entity.Traveler
 import io.ktor.auth.UserPasswordCredential
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 
 // Resources
@@ -40,7 +41,7 @@ import org.jetbrains.exposed.sql.select
 //}
 
 fun checkAuth(credentials: TravelerAuthResource): TravelerAuth? {
-    val rawUser = Traveler
+    val rawUser: ResultRow = Traveler
         .select { Traveler.email eq credentials.email }
         .single()
 
