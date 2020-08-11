@@ -25,8 +25,6 @@ fun Route.signup() {
     post("sign-up") {
         val signupResource: TravelerAuthResource = call.receive()
         val securePassword = SecurePassword(signupResource.password)
-        println("\nreceived signup resource = [${signupResource}]\n")
-
         val newId: Int = transaction {
             val inserted = Traveler.insert {
                 it[email] = signupResource.email
@@ -42,18 +40,9 @@ fun Route.signup() {
 
 fun Route.login() {
     post("sign-in") {
-        println("first")
         val credentials: TravelerAuthResource = call.receive()
-        println("credentials:  ${credentials.email} [${credentials.password}]")
-
-        val user = transaction { checkAuth(credentials) } ?: throw RuntimeException("No user")
-        println("second $user")
-
-        if (user != null) {
-            val token = JwtConfig.makeToken(user)
-            call.sessions.set("jwt", token)
-        } else {
-            call.respondText("failed.", ContentType.Text.Plain, HttpStatusCode.Forbidden)
-        }
+        val user = transaction { checkAuth(credentials) }
+        val token = JwtConfig.makeToken(user)
+        call.sessions.set("jwt", token)
     }
 }
