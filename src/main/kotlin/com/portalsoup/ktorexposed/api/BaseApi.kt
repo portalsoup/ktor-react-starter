@@ -86,13 +86,6 @@ fun Application.main() {
         healthcheck()
         authedHealthcheck()
         coordinates()
-
-
-        route("/test") {
-            get {
-                call.respondText("POWER OVERWHELMING", ContentType.Text.Plain)
-            }
-        }
     }
 }
 

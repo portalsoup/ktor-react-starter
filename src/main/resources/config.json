@@ -1,6 +1,10 @@
 {
   "db": {
     "username": "bikes",
-    "password": "tour"
+    "password": "tour",
+    "jdbcUrl": "jdbc:postgresql://db/pgdb",
+    "driverClassName": "org.postgresql.Driver",
+    "isAutoCommit": true,
+    "maximumPoolSize": 32
   }
 }

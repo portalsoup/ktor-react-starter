@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.api.resources.EntityCreatedResource
 import com.portalsoup.ktorexposed.api.resources.TravelerAuthResource
 import com.portalsoup.ktorexposed.core.JwtConfig
 import com.portalsoup.ktorexposed.core.SecurePassword
@@ -9,6 +10,7 @@ import io.ktor.application.call
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
+import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.post
@@ -21,28 +23,20 @@ import java.lang.RuntimeException
 
 fun Route.signup() {
     post("sign-up") {
-
-        println("entered closure")
         val signupResource: TravelerAuthResource = call.receive()
         val securePassword = SecurePassword(signupResource.password)
-        println("\npassword = [${signupResource.password}]\n")
-        println("hash = ${securePassword.hashPassword()}")
-        println("salt? ${securePassword.userSalt} ${securePassword.userSalt}")
+        println("\nreceived signup resource = [${signupResource}]\n")
 
-        transaction {
+        val newId: Int = transaction {
             val inserted = Traveler.insert {
                 it[email] = signupResource.email
                 it[passwordHash] = securePassword.hashPassword()
                 it[passwordSalt] = securePassword.userSalt
             }
             println(inserted)
-        }
-        transaction {
-            Traveler
-                .select {Traveler.email eq signupResource.email}
-                .single()
-        }
-        call.respondText("Done", ContentType.Text.Plain, HttpStatusCode.OK)
+            inserted get Traveler.id
+        }.value
+        call.respond(EntityCreatedResource(newId))
     }
 }
 
