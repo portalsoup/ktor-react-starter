@@ -31,17 +31,22 @@ repositories {
 
 // try koin for dependency injection
 dependencies {
+    // core
     implementation(kotlin("stdlib-jdk8"))
-    testImplementation("junit:junit:4.12")
-    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation(kotlin("reflect", "1.2.51"))
 
-//    implementation("io.ktor:ktor-server-core:1.3.2")
+    // logging
+    implementation("org.slf4j:slf4j-api:1.7.30")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("ch.qos.logback:logback-core:1.2.3")
+
+    // webserver
     implementation("io.ktor:ktor-server-netty:1.3.2")
     implementation("io.ktor:ktor-auth-jwt:1.3.2")
     implementation("io.ktor:ktor-gson:1.3.2")
 
+    // db
     implementation("org.postgresql:postgresql:42.2.14")
-
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
@@ -50,8 +55,9 @@ dependencies {
 
     implementation("org.flywaydb:flyway-core:6.4.0")
 
-//    implementation("org.koin:koin-core:2.0.0-GA2")
-//    testimplementation("org.koin:koin-test:2.0.0-GA2")
+
+    // test
+    testImplementation("junit:junit:4.12")
 }
 
 val compileKotlin: KotlinCompile by tasks
