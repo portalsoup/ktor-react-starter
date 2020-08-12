@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -16,9 +15,7 @@ plugins {
 
 // Variables
 val exposedVersion: String by project
-val test by lazy {
-    null
-}
+val ktorVersion: String by project
 
 application {
     mainClassName = "com.portalsoup.ktorexposed.AppKt"
@@ -41,9 +38,10 @@ dependencies {
     implementation("ch.qos.logback:logback-core:1.2.3")
 
     // webserver
-    implementation("io.ktor:ktor-server-netty:1.3.2")
-    implementation("io.ktor:ktor-auth-jwt:1.3.2")
-    implementation("io.ktor:ktor-gson:1.3.2")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+    implementation("io.ktor:ktor-gson:$ktorVersion")
+    implementation("io.ktor:ktor-server-sessions:$ktorVersion")
 
     // db
     implementation("org.postgresql:postgresql:42.2.14")

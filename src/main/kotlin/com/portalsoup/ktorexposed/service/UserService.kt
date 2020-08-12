@@ -2,7 +2,7 @@ package com.portalsoup.ktorexposed.service
 
 import com.portalsoup.ktorexposed.api.resources.TravelerAuth
 import com.portalsoup.ktorexposed.api.resources.TravelerAuthResource
-import com.portalsoup.ktorexposed.api.resources.toUserAuth
+import com.portalsoup.ktorexposed.api.resources.toPrincipal
 import com.portalsoup.ktorexposed.core.SecurePassword
 import com.portalsoup.ktorexposed.entity.Traveler
 import org.jetbrains.exposed.sql.ResultRow
@@ -14,7 +14,7 @@ fun checkAuth(credentials: TravelerAuthResource): TravelerAuth {
         .select { Traveler.email eq credentials.email }
         .single()
 
-    val foundUser = rawUser.toUserAuth()
+    val foundUser = rawUser.toPrincipal()
     val generatedHash = SecurePassword(rawPassword = credentials.password, userSalt = foundUser.passwordSalt)
 
     return foundUser.also {

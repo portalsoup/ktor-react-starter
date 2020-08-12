@@ -15,7 +15,7 @@ fun Route.healthcheck() {
 }
 
 fun Route.authedHealthcheck() {
-    authenticate("user") {
+    authenticate {
         get("authed/healthcheck") {
             val jwt = call.sessions.get("jwt") as String
 

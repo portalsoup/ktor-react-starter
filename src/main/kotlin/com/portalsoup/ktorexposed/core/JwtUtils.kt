@@ -3,11 +3,14 @@ package com.portalsoup.ktorexposed.core
 
 import com.auth0.jwt.*
 import com.auth0.jwt.algorithms.*
-import com.portalsoup.ktorexposed.AppConfig
 import com.portalsoup.ktorexposed.Config
 import com.portalsoup.ktorexposed.api.resources.TravelerAuth
+import com.portalsoup.ktorexposed.api.resources.toPrincipal
+import com.portalsoup.ktorexposed.entity.Traveler
 import io.ktor.auth.Principal
-import io.ktor.auth.jwt.JWTAuthenticationProvider
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.NullPointerException
 import java.util.*
 
 object JwtUtils {
@@ -23,7 +26,7 @@ object JwtUtils {
     fun makeToken(user: TravelerAuth): String = JWT.create()
 //        .withSubject("Authentication")
         .withIssuer(Config.global.hostname)
-        .withClaim("email", user.email)
+        .withClaim("id", user.id.value)
         .withExpiresAt(getExpiration())
         .sign(algorithm)
 
@@ -38,4 +41,14 @@ object JwtUtils {
 
 }
 
-data class UserPrincipal(val user: TravelerAuth): Principal
+class JwtCookie(val jwt: String): Principal {
+    fun unpack(): TravelerAuth = transaction {
+        val id = JwtUtils.verifyToken().verify(jwt).getClaim("id").asInt() ?: throw NullPointerException("No id claim found!")
+        Traveler
+            .select { Traveler.id eq id }
+            .single()
+            .toPrincipal()
+    }
+}
+
+//data class UserPrincipal(val user: TravelerAuth): Principal

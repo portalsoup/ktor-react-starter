@@ -1,35 +1,27 @@
 package com.portalsoup.ktorexposed.api
 
 import com.auth0.jwt.algorithms.Algorithm
-import com.portalsoup.ktorexposed.Config
-import com.portalsoup.ktorexposed.api.resources.toUserAuth
 import com.portalsoup.ktorexposed.api.routes.*
-import com.portalsoup.ktorexposed.core.JwtUtils
-import com.portalsoup.ktorexposed.core.UserPrincipal
-import com.portalsoup.ktorexposed.entity.Traveler
+import com.portalsoup.ktorexposed.core.JwtCookie
 import io.ktor.application.Application
+import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.jwt.jwt
+import io.ktor.auth.authentication
+import io.ktor.auth.session
 import io.ktor.features.*
 import io.ktor.gson.gson
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
 import io.ktor.routing.Routing
-import io.ktor.sessions.SessionStorageMemory
-import io.ktor.sessions.Sessions
-import io.ktor.sessions.cookie
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.transactions.transaction
-import java.lang.RuntimeException
+import io.ktor.sessions.*
 
 fun Application.main() {
     // Setup
     val jwtIssuer = "com.portalsoup"
     val jwtAudience = "whatthefuckamilol"
-
-    val algorithm = Algorithm.HMAC256("secret")
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -49,8 +41,8 @@ fun Application.main() {
         header(HttpHeaders.UserAgent)
         header(HttpHeaders.AccessControlAllowOrigin)
 
-        host("localhost")
-//        anyHost()
+//        host("localhost")
+        anyHost()
 
         allowSameOrigin = true
 
@@ -58,10 +50,7 @@ fun Application.main() {
     }
 
     install(Sessions) {
-        cookie<MySession>(
-            "SESSION",
-            SessionStorageMemory() // make redis
-        ) {
+        cookie<JwtCookie>("auth") {
             cookie.path = "/"
             cookie.extensions["SameSite"] = "lax"
         }
@@ -74,26 +63,43 @@ fun Application.main() {
     install(ContentNegotiation) { gson { } }
 
     install(Authentication) {
-        jwt(name = "user") {
-            println("in jwt block")
-            verifier(JwtUtils.verifyToken())
-            realm = Config.global.hostname
-            validate {
-                println("validating... $it")
-                with(it.payload) {
-                    val email = getClaim("email").asString() ?: ""
-                    when {
-                        email.isNotEmpty() -> transaction {
-                            Traveler
-                                .select { Traveler.email eq email }
-                                .single()
-                                .toUserAuth()
-                        }.let { user -> UserPrincipal(user) }
-                        else -> null
-                    }
-                }
+        session<JwtCookie> {
+            challenge {
+                println("Can find cookie? ${call.sessions.get<JwtCookie>()}")
+                val failureString = call.authentication.allFailures.joinToString { "\t${it.javaClass}" }
+                val errorString = call.authentication.allErrors.joinToString("\n") { "\t${it.message}" }
+                call.respond(HttpStatusCode.Unauthorized, "Errors:\n$errorString\n\nFailures:\n$failureString")
+            }
+
+            validate { session: JwtCookie ->
+                println("Validating the session auth \n\n$session\n")
+                session
             }
         }
+
+//        jwt(name = "user") {
+//            verifier(JwtUtils.verifyToken())
+//            realm = Config.global.hostname
+//
+//            challenge { _, _ ->
+//                call.respond(HttpStatusCode.BadGateway)
+//            }
+//
+//            validate {
+//                with(it.payload) {
+//                    val id = getClaim("id").asInt() ?: -1
+//                    when {
+//                         id > 0 -> transaction {
+//                            Traveler
+//                                .select { Traveler.id eq id }
+//                                .single()
+//                                .toUserAuth()
+//                        }.let { user -> UserPrincipal(user) }
+//                        else -> null
+//                    }
+//                }
+//            }
+//        }
     }
 
     install(Routing) {
@@ -103,5 +109,3 @@ fun Application.main() {
         coordinates()
     }
 }
-
-data class MySession(val id: Int, val jwt: String)

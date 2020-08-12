@@ -13,6 +13,6 @@ data class TravelerAuth(
 ) : Principal
 
 // Resource mapping functions
-fun ResultRow.toUserAuth(): TravelerAuth = TravelerAuth(this[Traveler.id], this[Traveler.email], this[Traveler.passwordHash], this[Traveler.passwordSalt])
+fun ResultRow.toPrincipal(): TravelerAuth = TravelerAuth(this[Traveler.id], this[Traveler.email], this[Traveler.passwordHash], this[Traveler.passwordSalt])
 
 data class TravelerAuthResource(val email: String, val password: String)
