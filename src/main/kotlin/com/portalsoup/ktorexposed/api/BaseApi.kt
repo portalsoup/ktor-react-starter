@@ -1,26 +1,28 @@
 package com.portalsoup.ktorexposed.api
 
 import com.auth0.jwt.algorithms.Algorithm
+import com.portalsoup.ktorexposed.Config
+import com.portalsoup.ktorexposed.api.resources.toUserAuth
 import com.portalsoup.ktorexposed.api.routes.*
-import com.portalsoup.ktorexposed.core.JwtConfig
+import com.portalsoup.ktorexposed.core.JwtUtils
+import com.portalsoup.ktorexposed.core.UserPrincipal
+import com.portalsoup.ktorexposed.entity.Traveler
 import io.ktor.application.Application
-import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
 import io.ktor.features.*
 import io.ktor.gson.gson
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.response.respondText
 import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.route
+import io.ktor.sessions.SessionStorageMemory
 import io.ktor.sessions.Sessions
 import io.ktor.sessions.cookie
-import java.time.Duration
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.RuntimeException
 
 fun Application.main() {
     // Setup
@@ -56,7 +58,13 @@ fun Application.main() {
     }
 
     install(Sessions) {
-        cookie<MySession>("SESSION")
+        cookie<MySession>(
+            "SESSION",
+            SessionStorageMemory() // make redis
+        ) {
+            cookie.path = "/"
+            cookie.extensions["SameSite"] = "lax"
+        }
     }
 
     install(CallLogging)
@@ -66,27 +74,34 @@ fun Application.main() {
     install(ContentNegotiation) { gson { } }
 
     install(Authentication) {
-        jwt { verifier(JwtConfig.verifier)
-            realm = JwtConfig.issuer
+        jwt(name = "user") {
+            println("in jwt block")
+            verifier(JwtUtils.verifyToken())
+            realm = Config.global.hostname
             validate {
+                println("validating... $it")
                 with(it.payload) {
-                    val email = getClaim("email").isNull
-                    if (email)
-                        null
-                    else
-                        JWTPrincipal(it.payload)
+                    val email = getClaim("email").asString() ?: ""
+                    when {
+                        email.isNotEmpty() -> transaction {
+                            Traveler
+                                .select { Traveler.email eq email }
+                                .single()
+                                .toUserAuth()
+                        }.let { user -> UserPrincipal(user) }
+                        else -> null
+                    }
                 }
             }
         }
     }
 
     install(Routing) {
-        login()
-        signup()
+        user()
         healthcheck()
         authedHealthcheck()
         coordinates()
     }
 }
 
-data class MySession(val name: String, val jwt: String)
+data class MySession(val id: Int, val jwt: String)

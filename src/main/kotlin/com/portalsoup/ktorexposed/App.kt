@@ -9,22 +9,7 @@ import java.lang.RuntimeException
 import java.net.URL
 
 fun main(args: Array<String>) {
-    val config = getConfig()
-
-    DatabaseFactory.init(config)
+    DatabaseFactory.init()
 
     embeddedServer(Netty, commandLineEnvironment(args)).start(wait = true)
-}
-
-private fun getConfig(): AppConfig {
-    val configUrl: URL = AppConfig::class.java.classLoader.getResource("config.json") ?: throw RuntimeException("failed to find config file")
-    val jsonBuilder = StringBuilder()
-    File(configUrl.file)
-        .bufferedReader()
-        .readLines()
-        .forEach { line ->
-            jsonBuilder.appendln("${line}\n")
-        }
-    val gson = Gson()
-    return gson.fromJson(jsonBuilder.toString(), AppConfig::class.java)
 }

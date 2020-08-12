@@ -1,4 +1,5 @@
 {
+  "hostname": "localhost",
   "db": {
     "username": "bikes",
     "password": "tour",

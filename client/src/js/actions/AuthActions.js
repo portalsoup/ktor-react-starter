@@ -35,7 +35,7 @@ export function onLogIn(email, password) {
 export function getCurrentUser() {
     console.log(`getting current user`);
     return (dispatch) => {
-        return fetch(`http://localhost:8080/authed/healthcheck`, {
+        return fetch(`http://localhost:8080/currentUser`, {
             method: "GET",
             headers: {
             },

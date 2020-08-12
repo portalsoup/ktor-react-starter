@@ -11,7 +11,8 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 
 object DatabaseFactory: Logging {
 
-    fun init(config: AppConfig) {
+    fun init() {
+        val config = Config.global
         log().info("Beginning initialization!")
         val flyway = Flyway.configure().dataSource(config.db.jdbcUrl, config.db.username, config.db.password).load()
         migrateFlyway(flyway)
