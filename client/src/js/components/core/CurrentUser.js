@@ -10,8 +10,11 @@ class CurrentUser extends Component {
     }
 
     render() {
+        const user = this.props.currentUser.name || "No user"
         return (
-            <button onClick={() => this.props.onClick()}>Current user</button>
+            <label
+                style={{color: "white"}}
+            >{user}</label>
         );
     }
 
@@ -23,4 +26,10 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(CurrentUser);
+function mapStateToProps(state) {
+    return {
+        currentUser: state.currentUser
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrentUser);

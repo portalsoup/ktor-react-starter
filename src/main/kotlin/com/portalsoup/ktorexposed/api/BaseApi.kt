@@ -40,9 +40,9 @@ fun Application.main() {
         header(HttpHeaders.Referrer)
         header(HttpHeaders.UserAgent)
         header(HttpHeaders.AccessControlAllowOrigin)
+        header(HttpHeaders.Cookie)
 
-//        host("localhost")
-        anyHost()
+        host("localhost")
 
         allowSameOrigin = true
 

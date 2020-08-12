@@ -1,6 +1,7 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.Config
+import com.portalsoup.ktorexposed.api.resources.CurrentUserResource
 import com.portalsoup.ktorexposed.api.resources.EntityCreatedResource
 import com.portalsoup.ktorexposed.api.resources.TravelerAuthResource
 import com.portalsoup.ktorexposed.core.JwtCookie
@@ -57,7 +58,7 @@ fun Route.user() {
                 println("Entered currentUser method")
                 val principal = call.authentication.principal<JwtCookie>()?.unpack() ?: throw RuntimeException("null principal")
                 println("principal $principal")
-                call.respondText { principal.email }
+                call.respond(CurrentUserResource(principal.id.value, principal.email))
             }
         }
     }

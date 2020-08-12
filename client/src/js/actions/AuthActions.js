@@ -1,4 +1,5 @@
-import axios from 'axios'; 
+// import axios from 'axios'; 
+import { CURRENT_USER } from "../constants/action-types";
 
 export function onSignUp(email, password) {
     return (dispatch) => {
@@ -29,6 +30,7 @@ export function onLogIn(email, password) {
             if (response.ok) {
                 console.log("Success");
             }
+            dispatch(getCurrentUser())
         })
     }
 }
@@ -43,7 +45,13 @@ export function getCurrentUser() {
             credentials: 'include',
         }).then(response => {
             if (response.ok) {
-                console.log("ok?");
+                console.log("About to set state")
+                response.json().then(json => {
+                    dispatch({
+                        type: CURRENT_USER,
+                        payload: json
+                    });
+                })
             }
         })
     }
