@@ -53,6 +53,9 @@ dependencies {
 
     implementation("org.flywaydb:flyway-core:6.4.0")
 
+    // GPS
+    implementation("io.jenetics:jpx:1.4.0")
+
 
     // test
     testImplementation("junit:junit:4.12")

@@ -103,9 +103,11 @@ fun Application.main() {
     }
 
     install(Routing) {
+        dev()
         user()
         healthcheck()
         authedHealthcheck()
+        routes()
         coordinates()
     }
 }

@@ -1,0 +1,1 @@
+https://gitlab.com/nanodeath/ktor-session-auth-example

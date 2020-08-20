@@ -3,7 +3,7 @@
   "db": {
     "username": "bikes",
     "password": "tour",
-    "jdbcUrl": "jdbc:postgresql://localhost/pgdb",
+    "jdbcUrl": "jdbc:postgresql://db/pgdb",
     "driverClassName": "org.postgresql.Driver",
     "isAutoCommit": true,
     "maximumPoolSize": 32

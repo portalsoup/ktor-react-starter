@@ -17,5 +17,6 @@ create table BLOGPOST (
     ID serial primary key,
     TITLE varchar(255) not null,
     BODY text not null,
-    ROUTEID bigint
+    ROUTEID bigint,
+    CREATEDDATE timestamptz not null
 );

@@ -7,6 +7,7 @@ import com.portalsoup.ktorexposed.Config
 import com.portalsoup.ktorexposed.api.resources.TravelerAuth
 import com.portalsoup.ktorexposed.api.resources.toPrincipal
 import com.portalsoup.ktorexposed.entity.Traveler
+import com.portalsoup.ktorexposed.entity.Travelers
 import io.ktor.auth.Principal
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -44,8 +45,8 @@ object JwtUtils {
 class JwtCookie(val jwt: String): Principal {
     fun unpack(): TravelerAuth = transaction {
         val id = JwtUtils.verifyToken().verify(jwt).getClaim("id").asInt() ?: throw NullPointerException("No id claim found!")
-        Traveler
-            .select { Traveler.id eq id }
+        Travelers
+            .select { Travelers.id eq id }
             .single()
             .toPrincipal()
     }

@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.entity
 
+import com.portalsoup.ktorexposed.api.resources.CoordinateResource
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -26,4 +27,8 @@ class Coordinate(id: EntityID<Int>): IntEntity(id) {
     var route by Route optionalReferencedOn Coordinates.route
     var createdDate by Coordinates.createdDate
     var heartRate by Coordinates.heartRate
+}
+
+fun Coordinate.toResource(): CoordinateResource {
+    return CoordinateResource(lat, lng, altitude, route?.id?.value, createdDate, heartRate)
 }
