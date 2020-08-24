@@ -1,11 +1,11 @@
 plugins {
-    application
     java
     kotlin("jvm") version "1.3.70"
     id("org.flywaydb.flyway") version "6.4.0"
 }
 
 val exposedVersion: String by rootProject
+val ktorVersion: String by rootProject
 
 repositories {
     mavenCentral()
@@ -26,6 +26,7 @@ dependencies {
 
     implementation("org.flywaydb:flyway-core:6.4.0")
 
+    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.jenetics:jpx:1.4.0")
 
 }
@@ -37,4 +38,10 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
+}
+
+flyway {
+    url = "jdbc:postgresql://db/pgdb"
+    user = "bikes"
+    password = "tour"
 }

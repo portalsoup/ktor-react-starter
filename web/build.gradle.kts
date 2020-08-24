@@ -10,7 +10,6 @@ plugins {
     application
     java
     kotlin("jvm") version "1.3.70"
-    id("org.flywaydb.flyway") version "6.4.0"
 }
 
 // Variables
@@ -40,8 +39,6 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktorVersion")
     implementation("io.ktor:ktor-server-sessions:$ktorVersion")
 
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-
     // test
     testImplementation("junit:junit:4.12")
 }
@@ -53,10 +50,4 @@ compileKotlin.kotlinOptions {
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
     jvmTarget = "1.8"
-}
-
-flyway {
-    url = "jdbc:postgresql://db/pgdb"
-    user = "bikes"
-    password = "tour"
 }

@@ -1,8 +1,6 @@
 plugins {
-    application
     java
     kotlin("jvm") version "1.3.70"
-    id("org.flywaydb.flyway") version "6.4.0"
 }
 
 val ktorVersion: String by rootProject
@@ -23,6 +21,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("ch.qos.logback:logback-core:1.2.3")
 
+    implementation("io.ktor:ktor-gson:$ktorVersion")
     implementation("io.jenetics:jpx:1.4.0")
 
 }

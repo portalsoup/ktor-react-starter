@@ -1,6 +1,8 @@
 package com.portalsoup.ktorexposed.service
 
 
+import com.portalsoup.ktorexposed.dao.CoordinateDAO
+import com.portalsoup.ktorexposed.dao.RouteDAO
 import com.portalsoup.ktorexposed.resources.CoordinateResource
 import com.portalsoup.ktorexposed.resources.RouteResource
 import io.jenetics.jpx.GPX
@@ -23,7 +25,7 @@ object GPXService {
                 .map { mapAndPersistPoints(it) }
                 .map { points ->
                     val route = RouteResource(null, track.name.orElseGet(getName), points)
-                    val id = RouteService.create(
+                    val id = RouteDAO.create(
                         listOf(route)
                     ).first()
                     route.copy(id = id.id, coordinates = points.map { it.copy(routeId = id.id) })
@@ -32,7 +34,7 @@ object GPXService {
 
     fun mapAndPersistPoints(trackSegment: TrackSegment): List<CoordinateResource> {
         val points = trackSegment.points.map { this.mapToCoordinate(it) }
-        CoordinateService.create(points)
+        CoordinateDAO.create(points)
         return points
     }
 

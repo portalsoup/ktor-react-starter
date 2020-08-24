@@ -1,6 +1,8 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.core.JwtCookie
+import com.portalsoup.ktorexposed.resources.TravelerResource
+import com.portalsoup.ktorexposed.service.UserService
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
@@ -18,13 +20,13 @@ import io.ktor.sessions.set
 fun Route.user() {
     route("") {
         post("sign-up") {
-            val signupResource: TravelerAuthResource = call.receive()
+            val signupResource: TravelerResource = call.receive()
             val newUserResource = UserService.signup(signupResource)
             call.respond(newUserResource)
         }
 
         post("sign-in") {
-            val credentials: TravelerAuthResource = call.receive()
+            val credentials: TravelerResource = call.receive()
             call.sessions.set(UserService.signin(credentials))
             call.respond(HttpStatusCode.OK)
         }

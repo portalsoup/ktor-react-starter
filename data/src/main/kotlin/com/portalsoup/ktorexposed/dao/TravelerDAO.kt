@@ -4,6 +4,7 @@ import com.portalsoup.ktorexposed.entity.Traveler
 import com.portalsoup.ktorexposed.entity.Travelers
 import com.portalsoup.ktorexposed.entity.toAuthResource
 import com.portalsoup.ktorexposed.entity.toResource
+import com.portalsoup.ktorexposed.resource.TravelerPrincipal
 import com.portalsoup.ktorexposed.resources.EntityCreatedResource
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import org.jetbrains.exposed.sql.batchInsert
@@ -22,18 +23,18 @@ object TravelerDAO {
                 .map { it.toResource() }
         }
 
-    fun getWithAuth(id: Int): TravelerAuthResource? = transaction {
+    fun getWithAuth(id: Int): TravelerResource? = transaction {
         Traveler.findById(id)
             ?.toAuthResource()
     }
 
-    fun create(travelers: List<TravelerAuthResource>) = transaction {
+    fun create(travelers: List<TravelerPrincipal>) = transaction {
         Travelers
             .batchInsert(travelers) { this[Travelers.email] = it.email }
             .map { EntityCreatedResource(it[Travelers.id].value) }
     }
 
-    fun update(traveler: TravelerAuthResource) = transaction {
+    fun update(traveler: TravelerResource) = transaction {
         Travelers.update({ Travelers.id eq traveler.id}) {
             it[email] = traveler.email
         }

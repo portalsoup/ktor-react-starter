@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.dao.RouteDAO
 import com.portalsoup.ktorexposed.resources.RouteResource
 import io.ktor.application.call
 import io.ktor.request.receive
@@ -12,12 +13,12 @@ fun Route.routes() {
             val id = call.parameters["id"]?.toInt()
                 ?: throw RuntimeException("No valid ID found.")
 
-            RouteService[id]
+            RouteDAO[id]
         }
 
         post("/") {
             val newRoutes = call.receive<List<RouteResource>>()
-            val newIds = RouteService.create(newRoutes)
+            val newIds = RouteDAO.create(newRoutes)
             call.respond(newIds)
         }
 

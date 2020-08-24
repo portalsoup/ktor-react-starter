@@ -4,6 +4,7 @@ import com.portalsoup.ktorexposed.core.*
 import com.portalsoup.ktorexposed.resources.*
 import com.portalsoup.ktorexposed.dao.TravelerDAO
 import com.portalsoup.ktorexposed.entity.Travelers
+import com.portalsoup.ktorexposed.resource.TravelerPrincipal
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction

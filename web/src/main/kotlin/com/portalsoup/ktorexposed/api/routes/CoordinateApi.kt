@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.dao.CoordinateDAO
 import com.portalsoup.ktorexposed.resources.CoordinateResource
 import io.ktor.application.call
 import io.ktor.request.receive
@@ -16,13 +17,13 @@ fun Route.coordinates() {
             val id = call.parameters["id"]?.toInt()
                 ?: throw RuntimeException("No valid ID found.")
 
-            val coordinate = transaction { CoordinateService[id] } ?: throw RuntimeException("failed to find coordinate")
+            val coordinate = transaction { CoordinateDAO[id] } ?: throw RuntimeException("failed to find coordinate")
             call.respond(coordinate)
         }
 
         post("/") {
             val newCoordinate = call.receive<List<CoordinateResource>>()
-            val newIds = CoordinateService.create(newCoordinate)
+            val newIds = CoordinateDAO.create(newCoordinate)
             call.respond(newIds)
         }
     }

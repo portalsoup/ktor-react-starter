@@ -25,3 +25,9 @@ fun Traveler.toResource(): TravelerResource =
         id.value,
         email
     )
+
+fun Traveler.toAuthResource(): TravelerResource =
+    TravelerResource(
+        id.value,
+        email
+    )
