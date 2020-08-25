@@ -1,4 +1,4 @@
-package com.portalsoup.ktorexposed.core
+package com.portalsoup.ktorexposed
 
 import com.portalsoup.ktorexposed.core.resource.TravelerPrincipal
 import com.portalsoup.ktorexposed.entity.Coordinates

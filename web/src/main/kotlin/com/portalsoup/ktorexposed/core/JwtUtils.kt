@@ -1,12 +1,12 @@
 package com.portalsoup.ktorexposed.core
 
-
 import com.auth0.jwt.*
 import com.auth0.jwt.algorithms.*
 import com.portalsoup.ktorexposed.Config
 import com.portalsoup.ktorexposed.core.resource.TravelerPrincipal
 import com.portalsoup.ktorexposed.dao.TravelerDAO
 import com.portalsoup.ktorexposed.entity.Travelers
+import com.portalsoup.ktorexposed.toPrincipal
 import io.ktor.auth.Principal
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction

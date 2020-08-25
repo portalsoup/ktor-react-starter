@@ -4,7 +4,7 @@ export TOURING_HOME=$(pwd)
 
 function start() {
     cd $TOURING_HOME
-    docker-compose stop && docker-compose build && docker-compose up -d && docker-compose logs -f
+    ./gradlew build && docker-compose down && docker-compose up
 }
 
 function restart() {

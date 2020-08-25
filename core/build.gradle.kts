@@ -15,9 +15,8 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":common"))
-    implementation(project(":data"))
 
-    implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
 
 }

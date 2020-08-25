@@ -16,15 +16,13 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":common"))
+    implementation(project(":core"))
 
     implementation("org.postgresql:postgresql:42.2.14")
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
     implementation("org.jetbrains.exposed", "exposed-java-time", exposedVersion)
-    implementation("com.zaxxer:HikariCP:2.7.8")
-
-    implementation("org.flywaydb:flyway-core:6.4.0")
 
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.jenetics:jpx:1.4.0")
