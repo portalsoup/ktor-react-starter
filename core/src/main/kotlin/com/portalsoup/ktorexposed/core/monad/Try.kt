@@ -15,7 +15,7 @@ import java.lang.NullPointerException
  */
 sealed class Try<out T> {
     data class Success<out T>(val data: T): Try<T>()
-    data class Failure(val error: Throwable, val status: Int = 404): Try<Nothing>()
+    data class Failure(val error: Throwable): Try<Nothing>()
 
     fun isSuccess(): Boolean = when (this) {
         is Success -> true
