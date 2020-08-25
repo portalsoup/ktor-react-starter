@@ -118,4 +118,25 @@ class TryTest {
             is Failure -> fail("Try shouldn't of been Failure")
         }
     }
+
+    @Test
+    fun functorIdentityLawTest() {
+        val u: Try<Int> = Success(1)
+        val u2 = u.map { x: Int -> x }
+
+        assertThat(u, equalTo(u2))
+    }
+
+    @Test
+    fun functorCompositionLawTest() {
+        val u: Try<Int> = Success(100)
+        val f: (i: Int) -> Int = { it / 3 }
+        val g: (i: Int) -> Int = { it / 2 }
+        val nested = u.map { f(g(it)) }
+        val chained = u
+            .map { g(it) }
+            .map { f(it) }
+
+        assertThat(chained, equalTo(nested))
+    }
 }
