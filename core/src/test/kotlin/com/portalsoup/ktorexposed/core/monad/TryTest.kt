@@ -61,17 +61,13 @@ class TryTest {
     @Test(expectedExceptions = [ExpectedException::class])
     fun throwOnFailureFailureTest() {
         val expectedValue: Throwable = ExpectedException()
-        val v: Try<Int> = Failure(expectedValue)
-
-        v.throwOnFailure()
+        Failure(expectedValue).throwOnFailure()
     }
 
     @Test
     fun throwOnFailureSuccessTest() {
         val expectedValue = 1
-        val v: Try<Int> = Success(expectedValue)
-
-        v.throwOnFailure()
+        Success(expectedValue).throwOnFailure()
     }
 
 

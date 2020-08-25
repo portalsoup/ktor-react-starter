@@ -27,9 +27,9 @@ sealed class Try<out T> {
         is Success -> false
     }
 
-    fun throwOnFailure(): Unit = when (this) {
+    fun throwOnFailure(): Try<T> = when (this) {
         is Failure -> throw error
-        is Success -> Unit
+        is Success -> Success(data)
     }
 
     fun wrapException(wrapper: Throwable): Try<T> = when (this) {
