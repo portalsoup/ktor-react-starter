@@ -10,7 +10,7 @@ import java.lang.NullPointerException
  *      val maybeSomething: Try<String> = ...
  *
  *      val str: String = when (maybeSomething) {
- *          is Success> -> x.data
+ *          is Success -> x.data
  *          is Failure -> throw x.error
  */
 sealed class Try<out T>() {
