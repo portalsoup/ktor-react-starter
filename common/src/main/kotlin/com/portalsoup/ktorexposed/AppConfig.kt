@@ -8,7 +8,7 @@ import java.net.URL
 /**
  * Serialized from config.json.
  */
-class AppConfig(val hostname: String, val db: Db)
+class AppConfig(val hostname: String, val server: Server, val db: Db)
 
 data class Db(
     val username: String,
@@ -17,4 +17,11 @@ data class Db(
     val driverClassName: String,
     val isAutoCommit: Boolean,
     val maximumPoolSize: Int
+)
+
+data class Server(
+    val publicIP: String,
+    val publicPort: Int,
+    val adminIP: String,
+    val adminPort: Int
 )
