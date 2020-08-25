@@ -18,18 +18,18 @@ sealed class Try<out T>() {
     data class Failure(val error: Throwable, val status: Int = 404): Try<Nothing>()
 
     fun isSuccess(): Boolean = when (this) {
-        is Success<T> -> true
-        else -> false
+        is Success -> true
+        is Failure -> false
     }
 
     fun isFailure(): Boolean = when (this) {
         is Failure -> true
-        else -> false
+        is Success -> false
     }
 
     fun throwOnFailure(): Unit = when (this) {
         is Failure -> throw error
-        else -> Unit
+        is Success -> Unit
     }
 
     fun wrapException(wrapper: Throwable): Try<T> = when (this) {
