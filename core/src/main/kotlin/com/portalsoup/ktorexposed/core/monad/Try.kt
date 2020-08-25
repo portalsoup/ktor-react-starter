@@ -3,8 +3,6 @@ package com.portalsoup.ktorexposed.core.monad
 import java.lang.NullPointerException
 
 /**
- * A mechanism to wrap the concept of a success and failure state.
- *
  * Usage example:
  *
  *      val maybeSomething: Try<String> = ...
