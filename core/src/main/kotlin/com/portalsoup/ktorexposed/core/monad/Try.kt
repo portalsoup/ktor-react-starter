@@ -27,28 +27,27 @@ sealed class Try<out T>() {
         else -> false
     }
 
-    fun throwOnFailure() {
-        if (this is Failure) throw error
+    fun throwOnFailure() = when (this) {
+        is Failure -> throw error
+        else -> Unit
     }
 
-    fun wrapException(wrapper: Throwable): Try<T> {
-        return when (this) {
-            is Failure -> {
-                wrapper.addSuppressed(error)
-                Failure(wrapper)
-            }
-            is Success<T> -> Success(data)
+    fun wrapException(wrapper: Throwable): Try<T> = when (this) {
+        is Failure -> {
+            wrapper.addSuppressed(error)
+            Failure(wrapper)
         }
+        is Success<T> -> Success(data)
     }
 
-    fun <R> map(transform: (T) -> R): Try<R> {
-        return when (this) {
-            is Success -> try {
+    fun <R> map(transform: (T) -> R): Try<R> = when (this) {
+        is Success -> {
+            try {
                 Success(transform(data))
             } catch (t: Throwable) {
                 Failure(t)
             }
-            is Failure -> Failure(error)
         }
+        is Failure -> Failure(error)
     }
 }
