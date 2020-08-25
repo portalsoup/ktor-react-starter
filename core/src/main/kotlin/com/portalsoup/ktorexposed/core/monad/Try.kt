@@ -5,9 +5,9 @@ import java.lang.NullPointerException
 /**
  * Usage example:
  *
- *      val maybeSomething: Try<String> = ...
+ *      val something: Try<String> = ...
  *
- *      val str: String = when (maybeSomething) {
+ *      val str: String = when (something) {
  *          is Success -> x.data
  *          is Failure -> throw x.error
  */
@@ -21,21 +21,18 @@ sealed class Try<out T> {
     }
 
     fun isFailure(): Boolean = when (this) {
-        is Failure -> true
         is Success -> false
+        is Failure -> true
     }
 
     fun throwOnFailure(): Try<T> = when (this) {
-        is Failure -> throw error
         is Success -> Success(data)
+        is Failure -> throw error
     }
 
     fun wrapException(wrapper: Throwable): Try<T> = when (this) {
-        is Failure -> {
-            wrapper.addSuppressed(error)
-            Failure(wrapper)
-        }
         is Success<T> -> Success(data)
+        is Failure -> Failure(wrapper.apply { addSuppressed(error) })
     }
 
     fun <R> map(transform: (T) -> R): Try<R> = when (this) {
