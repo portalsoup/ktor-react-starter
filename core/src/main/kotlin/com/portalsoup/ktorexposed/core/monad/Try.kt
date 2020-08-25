@@ -27,7 +27,7 @@ sealed class Try<out T>() {
         else -> false
     }
 
-    fun throwOnFailure() = when (this) {
+    fun throwOnFailure(): Unit = when (this) {
         is Failure -> throw error
         else -> Unit
     }
