@@ -13,13 +13,3 @@ fun Route.healthcheck() {
         call.respondText("POWER OVERWHELMING", ContentType.Text.Plain)
     }
 }
-
-fun Route.authedHealthcheck() {
-    authenticate {
-        get("authed/healthcheck") {
-            val jwt = call.sessions.get("jwt") as String
-
-            call.respondText("So logged in!", ContentType.Text.Plain)
-        }
-    }
-}

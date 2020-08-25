@@ -1,10 +1,10 @@
 package com.portalsoup.ktorexposed.dao
 
+import com.portalsoup.ktorexposed.core.resource.TravelerPrincipal
 import com.portalsoup.ktorexposed.entity.Traveler
 import com.portalsoup.ktorexposed.entity.Travelers
 import com.portalsoup.ktorexposed.entity.toAuthResource
 import com.portalsoup.ktorexposed.entity.toResource
-import com.portalsoup.ktorexposed.resource.TravelerPrincipal
 import com.portalsoup.ktorexposed.resources.EntityCreatedResource
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import org.jetbrains.exposed.sql.batchInsert

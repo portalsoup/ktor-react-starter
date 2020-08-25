@@ -20,9 +20,6 @@ import com.portalsoup.ktorexposed.api.routes.coordinates
 
 fun Application.main() {
     // Setup
-    val jwtIssuer = "com.portalsoup"
-    val jwtAudience = "whatthefuckamilol"
-
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Get)
@@ -76,37 +73,12 @@ fun Application.main() {
                 session
             }
         }
-
-//        jwt(name = "user") {
-//            verifier(JwtUtils.verifyToken())
-//            realm = Config.global.hostname
-//
-//            challenge { _, _ ->
-//                call.respond(HttpStatusCode.BadGateway)
-//            }
-//
-//            validate {
-//                with(it.payload) {
-//                    val id = getClaim("id").asInt() ?: -1
-//                    when {
-//                         id > 0 -> transaction {
-//                            Traveler
-//                                .select { Traveler.id eq id }
-//                                .single()
-//                                .toUserAuth()
-//                        }.let { user -> UserPrincipal(user) }
-//                        else -> null
-//                    }
-//                }
-//            }
-//        }
     }
 
     install(Routing) {
         dev()
         user()
         healthcheck()
-        authedHealthcheck()
         routes()
         coordinates()
     }
