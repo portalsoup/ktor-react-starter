@@ -30,6 +30,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":data"))
+    implementation(project(":core"))
 
     implementation("io.jenetics:jpx:1.4.0")
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)

@@ -16,6 +16,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":common"))
+    implementation(project(":core"))
 
     implementation("org.postgresql:postgresql:42.2.14")
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)

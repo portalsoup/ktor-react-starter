@@ -1,2 +1,2 @@
 rootProject.name = "ktor-exposed"
-include(":web", ":common", ":data")
+include(":web", ":common", ":data", ":core")
