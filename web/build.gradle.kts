@@ -25,7 +25,6 @@ repositories {
 dependencies {
 
     implementation(project(":common"))
-    implementation(project(":data"))
     implementation(project(":core"))
 
     implementation("io.jenetics:jpx:1.4.0")
