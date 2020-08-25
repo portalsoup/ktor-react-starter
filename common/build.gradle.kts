@@ -24,6 +24,8 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktorVersion")
     implementation("io.jenetics:jpx:1.4.0")
 
+    testImplementation("org.testng:testng:7.3.0")
+    testImplementation("com.natpryce:hamkrest:1.7.0.3")
 }
 
 val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks

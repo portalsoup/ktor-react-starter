@@ -42,6 +42,6 @@ fun Route.dev() {
                     LocalDateTime.now().minusDays(1)
                 )
             ))
-        }.getOrThrow()
+        }.getOrWrapIn()
     }
 }
