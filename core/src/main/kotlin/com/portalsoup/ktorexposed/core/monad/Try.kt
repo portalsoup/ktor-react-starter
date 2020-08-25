@@ -13,7 +13,7 @@ import java.lang.NullPointerException
  *          is Success -> x.data
  *          is Failure -> throw x.error
  */
-sealed class Try<out T>() {
+sealed class Try<out T> {
     data class Success<out T>(val data: T): Try<T>()
     data class Failure(val error: Throwable, val status: Int = 404): Try<Nothing>()
 
