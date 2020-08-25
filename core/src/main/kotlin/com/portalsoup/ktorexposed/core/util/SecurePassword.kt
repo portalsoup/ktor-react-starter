@@ -1,4 +1,4 @@
-package com.portalsoup.ktorexposed.core
+package com.portalsoup.ktorexposed.core.util
 
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom

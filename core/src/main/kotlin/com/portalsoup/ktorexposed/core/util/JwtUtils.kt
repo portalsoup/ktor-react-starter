@@ -1,9 +1,9 @@
-package com.portalsoup.ktorexposed.core
+package com.portalsoup.ktorexposed.core.util
 
 import com.auth0.jwt.*
 import com.auth0.jwt.algorithms.*
 import com.portalsoup.ktorexposed.Config
-import com.portalsoup.ktorexposed.core.resource.TravelerPrincipal
+import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.dao.TravelerDAO
 import com.portalsoup.ktorexposed.entity.Travelers
 import com.portalsoup.ktorexposed.toPrincipal

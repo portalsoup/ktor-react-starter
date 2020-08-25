@@ -1,4 +1,4 @@
-package com.portalsoup.ktorexposed.core.resource
+package com.portalsoup.ktorexposed.resources
 
 import io.ktor.auth.*
 

@@ -16,9 +16,12 @@ dependencies {
     implementation(kotlin("reflect", "1.2.51"))
 
     implementation(project(":common"))
+    implementation(project(":data"))
 
+    implementation("io.jenetics:jpx:1.4.0")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+    implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
 
     testImplementation("org.testng:testng:7.3.0")
     testImplementation("com.natpryce:hamkrest:1.7.0.3")

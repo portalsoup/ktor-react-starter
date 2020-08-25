@@ -1,11 +1,11 @@
 package com.portalsoup.ktorexposed
 
-import com.portalsoup.ktorexposed.core.resource.TravelerPrincipal
 import com.portalsoup.ktorexposed.entity.Coordinates
 import com.portalsoup.ktorexposed.entity.Routes
 import com.portalsoup.ktorexposed.entity.Travelers
 import com.portalsoup.ktorexposed.resources.CoordinateResource
 import com.portalsoup.ktorexposed.resources.RouteResource
+import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 

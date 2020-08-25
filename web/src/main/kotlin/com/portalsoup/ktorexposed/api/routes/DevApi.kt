@@ -1,13 +1,12 @@
 package com.portalsoup.ktorexposed.api.routes
 
-import com.portalsoup.ktorexposed.core.monad.Try
 import com.portalsoup.ktorexposed.core.monad.Try.Failure
 import com.portalsoup.ktorexposed.core.monad.Try.Success
 import com.portalsoup.ktorexposed.dao.BlogPostsDAO
 import com.portalsoup.ktorexposed.dao.RouteDAO
 import com.portalsoup.ktorexposed.resources.BlogPostResource
-import com.portalsoup.ktorexposed.service.AdminService.requireAdminApi
-import com.portalsoup.ktorexposed.service.GPXService
+import com.portalsoup.ktorexposed.core.service.AdminService.requireAdminApi
+import com.portalsoup.ktorexposed.core.service.GPXService
 import io.jenetics.jpx.GPX
 import io.ktor.application.*
 import io.ktor.http.*

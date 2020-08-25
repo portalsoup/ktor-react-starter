@@ -22,6 +22,7 @@ dependencies {
     implementation("ch.qos.logback:logback-core:1.2.3")
 
     implementation("io.ktor:ktor-gson:$ktorVersion")
+    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.jenetics:jpx:1.4.0")
 
     testImplementation("org.testng:testng:7.3.0")

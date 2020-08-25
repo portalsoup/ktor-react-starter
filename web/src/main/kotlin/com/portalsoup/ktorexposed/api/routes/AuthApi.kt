@@ -1,8 +1,8 @@
 package com.portalsoup.ktorexposed.api.routes
 
-import com.portalsoup.ktorexposed.core.JwtCookie
+import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.resources.TravelerResource
-import com.portalsoup.ktorexposed.service.UserService
+import com.portalsoup.ktorexposed.core.service.UserService
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication

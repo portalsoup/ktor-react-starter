@@ -1,4 +1,4 @@
-package com.portalsoup.ktorexposed.service
+package com.portalsoup.ktorexposed.core.service
 
 import com.portalsoup.ktorexposed.Config
 import com.portalsoup.ktorexposed.core.monad.Try

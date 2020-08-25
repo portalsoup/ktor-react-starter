@@ -1,7 +1,7 @@
 package com.portalsoup.ktorexposed.api
 
 import com.portalsoup.ktorexposed.api.routes.*
-import com.portalsoup.ktorexposed.core.JwtCookie
+import com.portalsoup.ktorexposed.core.util.JwtCookie
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -40,6 +40,7 @@ fun Application.main() {
         header(HttpHeaders.Cookie)
 
         host("localhost")
+//        host("localhost:8080")
 
         allowSameOrigin = true
 

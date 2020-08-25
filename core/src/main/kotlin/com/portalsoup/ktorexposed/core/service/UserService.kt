@@ -1,10 +1,12 @@
-package com.portalsoup.ktorexposed.service
+package com.portalsoup.ktorexposed.core.service
 
-import com.portalsoup.ktorexposed.core.*
 import com.portalsoup.ktorexposed.resources.*
 import com.portalsoup.ktorexposed.dao.TravelerDAO
 import com.portalsoup.ktorexposed.entity.Travelers
-import com.portalsoup.ktorexposed.core.resource.TravelerPrincipal
+import com.portalsoup.ktorexposed.resources.TravelerPrincipal
+import com.portalsoup.ktorexposed.core.util.JwtCookie
+import com.portalsoup.ktorexposed.core.util.JwtUtils
+import com.portalsoup.ktorexposed.core.util.SecurePassword
 import com.portalsoup.ktorexposed.toPrincipal
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
