@@ -7,16 +7,15 @@ import java.lang.NullPointerException
  *
  * Usage example:
  *
- *      // Example method declaration
  *      val maybeSomething: Try<String> = ...
  *
  *      val str: String = when (maybeSomething) {
  *          is Success> -> x.data
- *          is Failure -> x.error
+ *          is Failure -> throw x.error
  */
 sealed class Try<out T>() {
     data class Success<out T>(val data: T): Try<T>()
-    data class Failure(val error: Throwable): Try<Nothing>()
+    data class Failure(val error: Throwable, val status: Int = 404): Try<Nothing>()
 
     fun isSuccess(): Boolean = when (this) {
         is Success<T> -> true

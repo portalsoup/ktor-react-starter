@@ -1,6 +1,8 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.core.monad.Try
+import com.portalsoup.ktorexposed.core.monad.Try.Failure
+import com.portalsoup.ktorexposed.core.monad.Try.Success
 import com.portalsoup.ktorexposed.dao.BlogPostsDAO
 import com.portalsoup.ktorexposed.dao.RouteDAO
 import com.portalsoup.ktorexposed.resources.BlogPostResource
@@ -8,6 +10,8 @@ import com.portalsoup.ktorexposed.service.AdminService.requireAdminApi
 import com.portalsoup.ktorexposed.service.GPXService
 import io.jenetics.jpx.GPX
 import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.InputStream
@@ -20,7 +24,7 @@ class GpxReader() {
 fun Route.dev() {
 
     post("load-data") {
-        val response: Try<Any> = requireAdminApi(call) {
+        val responseData = requireAdminApi(call) {
             println("Loading data...")
             val gpxInputStream = GpxReader().read()
             val gpx = GPX.read(gpxInputStream)
@@ -42,6 +46,11 @@ fun Route.dev() {
                     LocalDateTime.now().minusDays(1)
                 )
             ))
-        }.getOrWrapIn()
+        }
+
+        when (responseData) {
+            is Success -> call.respond(HttpStatusCode.OK, responseData.data)
+            is Failure -> call.response.status(HttpStatusCode.NotFound)
+        }
     }
 }
