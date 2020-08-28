@@ -4,5 +4,5 @@ plugins {
 
 tasks.create<com.moowork.gradle.node.npm.NpmTask>("build") {
     dependsOn("npmInstall")
-    setArgs(listOf("run", "dev"))
+    setArgs(listOf("run", "build"))
 }

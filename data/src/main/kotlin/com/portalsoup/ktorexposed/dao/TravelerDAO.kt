@@ -12,31 +12,30 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
 object TravelerDAO {
-    operator fun get(id: Int): TravelerResource? = transaction {
-        Traveler.findById(id)
-            ?.toResource()
-    }
+    operator fun get(id: Int): TravelerResource? = Traveler
+        .findById(id)
+        ?.toResource()
 
-    fun get(ids: List<Int>, page: Long = 0, limit: Int = 0): List<TravelerResource> =
-        transaction {
-            Traveler.find { Travelers.id inList ids }
-                .map { it.toResource() }
-        }
+    fun get(ids: List<Int>, page: Long = 0, limit: Int = 0): List<TravelerResource> = Traveler
+        .find {
+            Travelers.id inList ids
+        }.map { it.toResource() }
 
-    fun getWithAuth(id: Int): TravelerResource? = transaction {
-        Traveler.findById(id)
-            ?.toAuthResource()
-    }
 
-    fun create(travelers: List<TravelerPrincipal>) = transaction {
-        Travelers
-            .batchInsert(travelers) { this[Travelers.email] = it.email }
-            .map { EntityCreatedResource(it[Travelers.id].value) }
-    }
+    fun getWithAuth(id: Int): TravelerResource? = Traveler
+        .findById(id)
+        ?.toAuthResource()
 
-    fun update(traveler: TravelerResource) = transaction {
-        Travelers.update({ Travelers.id eq traveler.id}) {
+
+    fun create(travelers: List<TravelerPrincipal>) = Travelers
+        .batchInsert(travelers) {
+            this[Travelers.email] = it.email
+        }.map { EntityCreatedResource(it[Travelers.id].value) }
+
+
+    fun update(traveler: TravelerResource) = Travelers
+        .update({ Travelers.id eq traveler.id}) {
             it[email] = traveler.email
         }
-    }
+
 }

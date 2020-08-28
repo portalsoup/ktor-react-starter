@@ -4,9 +4,9 @@ import java.lang.Exception
 import java.lang.RuntimeException
 
 data class RetryConfig(
-    val times: Int = 5,
-    val intervalSeconds: Int = 5,
-    val backoffIncrementSeconds: Int = 5
+    val maxTries: Int = 5,
+    val firstInterval: Int = 5,
+    val nextBackoffInterval: (timesWaited: Int) -> Int = { it * 5 } // default adds 5 seconds per wait
 )
 
 object Retrier {
@@ -15,15 +15,15 @@ object Retrier {
         config: RetryConfig = RetryConfig(),
         lambda: () -> T
     ): T {
-        for (x in 1..config.times) {
+        for (x in 1..config.maxTries) {
             try {
                 return lambda()
             } catch (e: Exception) {
                 println("Retrying $name failed with the exception: ${e.message}")
-                Thread.sleep((config.intervalSeconds * 1000L) + (5 * x)) // interval + 5 seconds per try
+                Thread.sleep((config.firstInterval * 1000L) + config.nextBackoffInterval(x)) // interval + 5 seconds per try
             }
         }
-        throw RetryException("$name failed ${config.times} times.")
+        throw RetryException("$name failed ${config.maxTries} times.")
     }
 }
 

@@ -13,7 +13,7 @@ fun ResultRow.toCoordinate(): CoordinateResource = CoordinateResource(
     this[Coordinates.lat],
     this[Coordinates.lng],
     this[Coordinates.altitude],
-    this[Coordinates.route]?.value,
+    this[Coordinates.routeId]?.value,
     this[Coordinates.createdDate],
     this[Coordinates.heartRate]
 )

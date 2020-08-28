@@ -8,7 +8,20 @@ https://gitlab.com/nanodeath/ktor-session-auth-example
 * Docker
 * docker-compose
 
-# Run the app
+# Gradle
+## Build the app
+Tasks run from the root module cascade into each submodule, and if a task with the
+same name exists, it will invoke alongside the root project.
+
+For example, to build the entire project
+    
+    ./gradlew build
+    
+To build a specific module only, then use of \[`client`, `common`, `core`, `data`, `web`\]
+
+    ./gradlew common:build
+
+## Run the app
 In the root of the repository, run
 
     $ ./gradlew build
@@ -31,23 +44,34 @@ The project consists of 5 modules that each contain a different app layer.
 
 ## data
 The data module contains all the definitions for the postgres database.  This 
-includes table definitions and entities.
+includes table definitions, entities and DAOs.  Database operations should be defined
+here, but should not create or handle any sql transactions.  
 
 ## common
 The common module contains data classes and other common definitions to be shared
 between all other kotlin modules.  Business logic generally should not go here.
+Common should not depend on any other module.
 
 ## core
 The core module contains core business logic and acts as the intermediary layer
-between database and the web server
+between database and the web server.  core should not create or handle any sql
+transactions and instead focus on aggregating database commands into useful operations.
+Callers of the service layer (most commonly web) handles creating and scoping transactions
 
 ## web
-The web module is the serverside entrypoint to the app.  It starts a webserver
-and holds all the api routes.
+The web module is the serverside entrypoint to the app.  It starts a web server
+and holds all the api routes.  This module is where the application configuration
+resources are for the app and libraries such as ktor and flyway
 
 ## client
 The only module that isn't kotlin, this module contains the ReactJS frontend which
-is to be intended to be served using nginx
+is to be intended to be served using nginx.  client is built using webpack and can
+be run using npm scripts.
+
+    npm run build # bundle the client code with assets in client/build
+    npm run watch # listens for changes in source files and auto-builds
+    
+client can be built from gradle using the task `build`, which runs `npm run build` under the hood
 
 This image illustrates the dependencies between modules
 ![](docs/modules.jpeg)
