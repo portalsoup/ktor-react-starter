@@ -7,26 +7,26 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.`java-time`.datetime
 
-object Coordinates: IntIdTable() {
+object CoordinateTable: IntIdTable() {
     val lat = float("lat")
     val lng = float("lng")
     val altitude = float("altitude").nullable()
-    val routeId = reference("routeid", Routes).nullable()
+    val routeId = reference("routeid", RouteTable).nullable()
     val createdDate = datetime("createddate")
     val heartRate = long("heartrate").nullable()
 }
 
 class Coordinate(id: EntityID<Int>): IntEntity(id) {
     companion object : IntEntityClass<Coordinate>(
-        Coordinates
+        CoordinateTable
     )
 
-    var lat by Coordinates.lat
-    var lng  by Coordinates.lng
-    var altitude by Coordinates.altitude
-    var route by Route optionalReferencedOn Coordinates.routeId
-    var createdDate by Coordinates.createdDate
-    var heartRate by Coordinates.heartRate
+    var lat by CoordinateTable.lat
+    var lng  by CoordinateTable.lng
+    var altitude by CoordinateTable.altitude
+    var route by Route optionalReferencedOn CoordinateTable.routeId
+    var createdDate by CoordinateTable.createdDate
+    var heartRate by CoordinateTable.heartRate
 }
 
 fun Coordinate.toResource(): CoordinateResource {

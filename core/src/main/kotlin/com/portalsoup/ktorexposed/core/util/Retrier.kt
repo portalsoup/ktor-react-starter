@@ -10,16 +10,20 @@ data class RetryConfig(
 )
 
 object Retrier {
+    private val log = getLogger(Retrier.javaClass)
     operator fun <T> invoke(
         name: String,
         config: RetryConfig = RetryConfig(),
         lambda: () -> T
     ): T {
         for (x in 1..config.maxTries) {
+            log.info("Attempting to run ${name}...")
             try {
-                return lambda()
+                val success = lambda()
+                log.info("Success!")
+                return success
             } catch (e: Exception) {
-                println("Retrying $name failed with the exception: ${e.message}")
+                println("Failed because: : [${e.message}] with ${config.maxTries - x} tries remaining.  Waiting for ${config.nextBackoffInterval(x)} seconds")
                 Thread.sleep((config.firstInterval * 1000L) + config.nextBackoffInterval(x)) // interval + 5 seconds per try
             }
         }

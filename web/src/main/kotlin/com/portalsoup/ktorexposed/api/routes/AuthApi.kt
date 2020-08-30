@@ -15,6 +15,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import io.ktor.sessions.sessions
 import io.ktor.sessions.set
+import org.jetbrains.exposed.sql.transactions.transaction
 
 
 fun Route.user() {
@@ -27,7 +28,8 @@ fun Route.user() {
 
         post("sign-in") {
             val credentials: TravelerResource = call.receive()
-            call.sessions.set(UserService.signin(credentials))
+            val jwt = UserService.signin(credentials)
+            call.sessions.set(jwt)
             call.respond(HttpStatusCode.OK)
         }
 

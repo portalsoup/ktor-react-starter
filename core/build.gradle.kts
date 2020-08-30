@@ -22,6 +22,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
+    implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
 
     testImplementation("org.testng:testng:7.3.0")
     testImplementation("com.natpryce:hamkrest:1.7.0.3")

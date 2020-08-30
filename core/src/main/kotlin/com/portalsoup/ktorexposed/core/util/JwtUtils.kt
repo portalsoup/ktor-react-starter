@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.*
 import com.portalsoup.ktorexposed.Config
 import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.dao.TravelerDAO
-import com.portalsoup.ktorexposed.entity.Travelers
+import com.portalsoup.ktorexposed.entity.TravelerTable
 import com.portalsoup.ktorexposed.toPrincipal
 import io.ktor.auth.Principal
 import org.jetbrains.exposed.sql.select
@@ -50,8 +50,8 @@ class JwtCookie(val jwt: String): Principal {
 
         foundTraveler
 
-        Travelers
-            .select { Travelers.id eq id }
+        TravelerTable
+            .select { TravelerTable.id eq id }
             .single()
             .toPrincipal()
     }

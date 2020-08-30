@@ -1,7 +1,7 @@
 package com.portalsoup.ktorexposed.dao
 
 import com.portalsoup.ktorexposed.entity.Coordinate
-import com.portalsoup.ktorexposed.entity.Coordinates
+import com.portalsoup.ktorexposed.entity.CoordinateTable
 import com.portalsoup.ktorexposed.entity.Route
 import com.portalsoup.ktorexposed.entity.toResource
 import com.portalsoup.ktorexposed.resources.CoordinateResource
@@ -16,25 +16,25 @@ object CoordinateDAO {
         ?.toResource()
 
     fun get(ids: List<Int>, page: Long = 0, limit: Int = 0): List<CoordinateResource> =
-        Coordinate.find { Coordinates.id inList ids }
+        Coordinate.find { CoordinateTable.id inList ids }
             .map { it.toResource() }
 
-    fun create(coordinates: List<CoordinateResource>) = Coordinates
+    fun create(coordinates: List<CoordinateResource>) = CoordinateTable
             .batchInsert(coordinates) {
                 val rawRouteId = it.routeId
                 // TODO Can I actually write new queries inside this closure?
                 val routeId = if (rawRouteId != null) Route.findById(rawRouteId)?.id else null
 
-                this[Coordinates.lat] = it.lat
-                this[Coordinates.lng] = it.lng
-                this[Coordinates.altitude] = it.altitude
-                this[Coordinates.routeId] = routeId
-                this[Coordinates.createdDate] = it.timestamp
-                this[Coordinates.heartRate] = it.heartRate
+                this[CoordinateTable.lat] = it.lat
+                this[CoordinateTable.lng] = it.lng
+                this[CoordinateTable.altitude] = it.altitude
+                this[CoordinateTable.routeId] = routeId
+                this[CoordinateTable.createdDate] = it.timestamp
+                this[CoordinateTable.heartRate] = it.heartRate
             }
-            .map { EntityCreatedResource(it[Coordinates.id].value) }
+            .map { EntityCreatedResource(it[CoordinateTable.id].value) }
 
 
-    fun update(coordinate: Coordinate) = Coordinates.update { coordinate }
+    fun update(coordinate: Coordinate) = CoordinateTable.update { coordinate }
 
 }

@@ -2,7 +2,7 @@ package com.portalsoup.ktorexposed.core.service
 
 import com.portalsoup.ktorexposed.resources.*
 import com.portalsoup.ktorexposed.dao.TravelerDAO
-import com.portalsoup.ktorexposed.entity.Travelers
+import com.portalsoup.ktorexposed.entity.TravelerTable
 import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.core.util.JwtUtils
@@ -18,14 +18,16 @@ object UserService {
         val securePassword = SecurePassword(
             signupResource.password ?: throw RuntimeException("Must contain password")
         )
-        val newId = TravelerDAO.create(listOf(
-            TravelerPrincipal(
-                email = signupResource.email,
-                passwordHash = securePassword.hashPassword(),
-                passwordSalt = securePassword.userSalt
+        val newTraveler = transaction {
+            TravelerDAO.create(
+                TravelerPrincipal(
+                    email = signupResource.email,
+                    passwordHash = securePassword.hashPassword(),
+                    passwordSalt = securePassword.userSalt
+                )
             )
-        ))[0].id
-        return EntityCreatedResource(newId)
+        }
+        return EntityCreatedResource(newTraveler.id.value)
     }
 
     fun signin(credentials: TravelerResource): JwtCookie {
@@ -40,8 +42,8 @@ object UserService {
 
     fun checkAuth(credentials: TravelerResource): TravelerPrincipal {
         val password = credentials.password ?: throw RuntimeException("Must contain password")
-        val rawUser: ResultRow = Travelers
-            .select { Travelers.email eq credentials.email }
+        val rawUser: ResultRow = TravelerTable
+            .select { TravelerTable.email eq credentials.email }
             .single()
 
         val foundUser = rawUser.toPrincipal()

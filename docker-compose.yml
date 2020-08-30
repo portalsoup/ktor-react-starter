@@ -36,6 +36,14 @@ services:
     restart: always
     networks:
       - server
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: someone@notreal.com
+#      PGADMIN_DEFAULT_PASSWORD: oohsosecure
+#      PGADMIN_LISTEN_PORT: 81
+#    depends_on:
+#      - db
 volumes:
   vdata: {}
 networks:

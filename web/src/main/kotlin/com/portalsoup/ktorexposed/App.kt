@@ -11,6 +11,7 @@ import java.lang.RuntimeException
 
 fun main(args: Array<String>) {
 
+    // TODO This go on coroutine?
     Retrier("database initialization") {
         DatabaseFactory.init()
     }

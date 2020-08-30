@@ -54,9 +54,7 @@ Common should not depend on any other module.
 
 ## core
 The core module contains core business logic and acts as the intermediary layer
-between database and the web server.  core should not create or handle any sql
-transactions and instead focus on aggregating database commands into useful operations.
-Callers of the service layer (most commonly web) handles creating and scoping transactions
+between database and the web server. 
 
 ## web
 The web module is the serverside entrypoint to the app.  It starts a web server
