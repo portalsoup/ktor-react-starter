@@ -2,7 +2,7 @@ import { GET_ROUTE } from "../constants/action-types";
 
 export function getRoute(id) {
     return (dispatch) => {
-        return fetch("http://localhost:8080/api/v1/route/${id}", {
+        return fetch(`http://localhost:8080/route/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

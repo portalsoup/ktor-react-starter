@@ -25,7 +25,6 @@ fun Application.main() {
         method(HttpMethod.Get)
         method(HttpMethod.Post)
 
-        header("Content-Type")
         header(HttpHeaders.Accept)
         header(HttpHeaders.AcceptEncoding)
         header(HttpHeaders.AcceptLanguage)
@@ -38,9 +37,12 @@ fun Application.main() {
         header(HttpHeaders.UserAgent)
         header(HttpHeaders.AccessControlAllowOrigin)
         header(HttpHeaders.Cookie)
+        header(HttpHeaders.ContentLength)
+        header(HttpHeaders.ContentType)
+
 
         host("localhost")
-//        host("localhost:8080")
+        host("localhost:8080")
 
         allowSameOrigin = true
 

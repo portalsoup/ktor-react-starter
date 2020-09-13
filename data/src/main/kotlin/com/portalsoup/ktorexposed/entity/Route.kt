@@ -14,7 +14,7 @@ class Route(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<Route>(RouteTable)
 
     var name by RouteTable.name
-    val coordinates by Coordinate optionalReferrersOn CoordinateTable.routeId
+    val coordinates by Coordinate via CoordinateTable
 }
 
 fun Route.toResource(): RouteResource =

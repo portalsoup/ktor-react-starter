@@ -1,11 +1,16 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.core.service.GPXService
 import com.portalsoup.ktorexposed.core.service.RouteService
 import com.portalsoup.ktorexposed.resources.RouteResource
+import io.jenetics.jpx.GPX
 import io.ktor.application.call
-import io.ktor.request.receive
+import io.ktor.http.*
+import io.ktor.http.content.*
+import io.ktor.request.*
 import io.ktor.response.respond
 import io.ktor.routing.*
+import java.io.File
 
 fun Route.routes() {
     route("/route") {
@@ -13,6 +18,7 @@ fun Route.routes() {
             val id = call.parameters["id"]?.toInt()
                 ?: throw RuntimeException("No valid ID found.")
             val route = RouteService.getRoute(id) ?: throw RuntimeException("Route not found")
+            println("got the route $route")
             call.respond(route)
         }
 
@@ -24,7 +30,23 @@ fun Route.routes() {
 
         route("/import") {
             post("/gpx") {
-                // TODO
+                println("Handling import")
+                call.receiveMultipart()
+                    .forEachPart {
+                        println("in a part $it")
+                        when (it) {
+                            is PartData.FileItem -> {
+                                println("it is a file")
+                                val gpx = GPXService.parseGpxInputStream(it.streamProvider())
+                                println("Got the gpx $gpx")
+                                GPXService.importGpx(gpx)
+                                call.respond(HttpStatusCode.OK)
+                            }
+                            is PartData.FormItem -> {
+                                println("Found it??\n\n%{it.value}\n\n")
+                            }
+                        }
+                    }
             }
         }
     }

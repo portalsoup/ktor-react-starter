@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import RouteMap from "./map/RouteMap";
 import { getRoute, setRoute } from "../../actions/RouteActions";
+import { uploadGpxFile } from "../../actions/GpxActions";
 
 import css from './TripsContainer.css';
 import * as L from "leaflet";
@@ -14,6 +15,7 @@ class TripsContainer extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
     }
     handleChange(event) {
         this.setState({route: event.target.value});
@@ -21,7 +23,12 @@ class TripsContainer extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.getRoute(this.state.route)
+        this.props.getRoute(this.state.route);
+    }
+
+    handleUpload(event) {
+        event.preventDefault();
+        this.props.uploadGpxFile(event.target.files[0]);
     }
 
 
@@ -29,6 +36,7 @@ class TripsContainer extends Component {
         return (
             <div>
                 <div className={css.main}>
+                    <input type="file" onChange={this.handleUpload} />
                     <form onSubmit={this.handleSubmit}>
                         Route id: <input type="text" onChange={this.handleChange} /><br/>
                         <input type="submit" value="Submit" />
@@ -52,6 +60,7 @@ class TripsContainer extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         getRoute: id => dispatch(getRoute(id)),
+        uploadGpxFile: file => dispatch(uploadGpxFile(file))
     };
 }
 
