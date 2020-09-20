@@ -1,0 +1,51 @@
+version: '3'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    volumes:
+      - ../../web/build/libs:/tour
+    networks:
+      - server
+      - client
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    ports:
+      - "80:80"
+    volumes:
+      - ../../client/build:/client
+    networks:
+      - client
+  db:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - vdata:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: bikes
+      POSTGRES_PASSWORD: tour
+      POSTGRES_DB: pgdb
+    restart: always
+    networks:
+      - server
+#  pgadmin:
+#    image: dpage/pgadmin4
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: someone@notreal.com
+#      PGADMIN_DEFAULT_PASSWORD: oohsosecure
+#      PGADMIN_LISTEN_PORT: 81
+#    depends_on:
+#      - db
+volumes:
+  vdata: {}
+networks:
+  server:
+  client:

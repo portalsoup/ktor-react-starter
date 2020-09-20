@@ -1,0 +1,43 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ../..
+      dockerfile: docker/dev/Dockerfile.server
+    volumes:
+      - ../..:/tour
+    networks:
+      - server
+      - client
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  client:
+    build:
+      context: ../..
+      dockerfile: docker/dev/Dockerfile.client
+    ports:
+      - "80:80"
+    volumes:
+      - ./client/build:/client
+    networks:
+      - client
+  db:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - vdata:/var/lib/postgresql
+    environment:
+      POSTGRES_USER: bikes
+      POSTGRES_PASSWORD: tour
+      POSTGRES_DB: pgdb
+    restart: always
+    networks:
+      - server
+volumes:
+  vdata: {}
+networks:
+  server:
+  client:
