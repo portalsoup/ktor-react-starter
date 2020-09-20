@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.`java-time`.datetime
 object BlogPostTable : IntIdTable() {
     val title = varchar("title", 255)
     val body = text("body")
-    val routeId = reference("route", RouteTable).nullable()
+    val route = reference("route", RouteTable).nullable()
     val timePosted = datetime("createddate")
 }
 
@@ -19,13 +19,13 @@ class BlogPost(id: EntityID<Int>) : IntEntity(id) {
 
     var title by BlogPostTable.title
     var body by BlogPostTable.body
-    var route by Route optionalReferencedOn BlogPostTable.routeId
+    var route by Route optionalReferencedOn BlogPostTable.route
     var timePosted by BlogPostTable.timePosted
 }
 
 fun BlogPost.toResource(): BlogPostResource =
     BlogPostResource(
-        id.value,
+        id,
         title,
         body,
         route?.toResource(),

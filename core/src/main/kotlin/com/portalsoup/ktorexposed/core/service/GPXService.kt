@@ -1,6 +1,7 @@
 package com.portalsoup.ktorexposed.core.service
 
 
+import com.portalsoup.ktorexposed.core.util.getLogger
 import com.portalsoup.ktorexposed.dao.CoordinateDAO
 import com.portalsoup.ktorexposed.dao.RouteDAO
 import com.portalsoup.ktorexposed.resources.CoordinateResource
@@ -18,6 +19,8 @@ import kotlin.streams.toList
 
 object GPXService {
 
+    val log = getLogger(GPXService.javaClass)
+
     fun parseGpxInputStream(inputStream: InputStream): GPX = GPX.read(inputStream)
 
     fun importGpx(gpx: GPX): List<RouteResource> = gpx.tracks().toList()
@@ -25,33 +28,28 @@ object GPXService {
             val i = AtomicInteger(0)
             val uuid = UUID.randomUUID().toString()
             val getName = { "${uuid}_$i" }
-            track.segments
-                .map { mapAndPersistPoints(it) }
-                .map { points ->
-                    val route = RouteResource(null, track.name.orElseGet(getName), points)
-                    val id = transaction {
-                        RouteDAO.create(
-                            listOf(route)
-                        ).first()
-                    }
-                    route.copy(id = id.id, coordinates = points.map { it.copy(routeId = id.id) })
-                }
+            transaction {
+                val routeCreated = RouteDAO.create(RouteResource(null, track.name.orElseGet(getName)))
+                log.debug("Route created $routeCreated")
+                track.segments.map { mapAndPersistPoints(routeCreated.id, it) }
+                listOf(RouteDAO[routeCreated.id])
+            }
         }.flatten()
 
-    fun mapAndPersistPoints(trackSegment: TrackSegment): List<CoordinateResource> {
-        val points = trackSegment.points.map { this.mapToCoordinate(it) }
+    fun mapAndPersistPoints(routeId: Int, trackSegment: TrackSegment): List<CoordinateResource> {
+        val points = trackSegment.points.map { this.mapToCoordinate(routeId, it) }
         transaction {
             CoordinateDAO.create(points)
         }
         return points
     }
 
-    private fun mapToCoordinate(wayPoint: WayPoint): CoordinateResource {
+    private fun mapToCoordinate(routeId: Int, wayPoint: WayPoint): CoordinateResource {
         return CoordinateResource(
             wayPoint.latitude.toFloat(),
             wayPoint.longitude.toFloat(),
-            wayPoint.elevation.map{ it.toFloat() }.orElse(null),
-            null,
+            wayPoint.elevation.map { it.toFloat() }.orElse(null),
+            routeId,
             wayPoint.time.map { it.toEpochSecond() }.map{ LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC) }.orElse(LocalDateTime.now()),
             null
         )

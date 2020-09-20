@@ -11,7 +11,7 @@ object CoordinateTable: IntIdTable() {
     val lat = float("lat")
     val lng = float("lng")
     val altitude = float("altitude").nullable()
-    val routeId = reference("routeid", RouteTable).nullable()
+    val route = reference("route", RouteTable).nullable()
     val createdDate = datetime("createddate")
     val heartRate = long("heartrate").nullable()
 }
@@ -24,7 +24,7 @@ class Coordinate(id: EntityID<Int>): IntEntity(id) {
     var lat by CoordinateTable.lat
     var lng  by CoordinateTable.lng
     var altitude by CoordinateTable.altitude
-    var route by Route optionalReferencedOn CoordinateTable.routeId
+    var route by Route optionalReferencedOn CoordinateTable.route
     var createdDate by CoordinateTable.createdDate
     var heartRate by CoordinateTable.heartRate
 }

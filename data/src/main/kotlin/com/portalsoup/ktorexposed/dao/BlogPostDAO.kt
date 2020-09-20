@@ -21,7 +21,7 @@ object BlogPostDAO {
     fun create(blogPosts: List<BlogPostResource>) = BlogPostTable.batchInsert(blogPosts) {
         this[BlogPostTable.title] = it.title
         this[BlogPostTable.body] = it.body
-        this[BlogPostTable.routeId] = null // it.route?.id // TODO janky hack won't work
+        this[BlogPostTable.route] = null // it.route?.id // TODO janky hack won't work
         this[BlogPostTable.timePosted] = it.timePosted
     }
         .map { EntityCreatedResource(it[BlogPostTable.id].value) }

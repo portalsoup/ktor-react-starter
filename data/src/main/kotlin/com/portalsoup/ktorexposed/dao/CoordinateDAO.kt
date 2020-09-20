@@ -28,7 +28,7 @@ object CoordinateDAO {
                 this[CoordinateTable.lat] = it.lat
                 this[CoordinateTable.lng] = it.lng
                 this[CoordinateTable.altitude] = it.altitude
-                this[CoordinateTable.routeId] = routeId
+                this[CoordinateTable.route] = routeId
                 this[CoordinateTable.createdDate] = it.timestamp
                 this[CoordinateTable.heartRate] = it.heartRate
             }

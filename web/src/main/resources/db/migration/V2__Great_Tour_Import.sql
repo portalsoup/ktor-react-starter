@@ -3,7 +3,7 @@ create table COORDINATE (
     LAT float not null,
     LNG float not null,
     ALTITUDE float,
-    ROUTEID bigint,
+    ROUTE bigint,
     CREATEDDATE timestamptz not null,
     HEARTRATE bigint
 );
@@ -17,6 +17,6 @@ create table BLOGPOST (
     ID serial primary key,
     TITLE varchar(255) not null,
     BODY text not null,
-    ROUTEID bigint,
+    ROUTE bigint,
     CREATEDDATE timestamptz not null
 );
