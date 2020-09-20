@@ -3,23 +3,24 @@ package com.portalsoup.ktorexposed.dao
 import com.portalsoup.ktorexposed.entity.Coordinate
 import com.portalsoup.ktorexposed.entity.CoordinateTable
 import com.portalsoup.ktorexposed.entity.Route
-import com.portalsoup.ktorexposed.entity.toResource
 import com.portalsoup.ktorexposed.resources.CoordinateResource
-import com.portalsoup.ktorexposed.resources.EntityCreatedResource
+import org.jetbrains.exposed.sql.SizedCollection
+import org.jetbrains.exposed.sql.SizedIterable
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.update
 
 object CoordinateDAO {
 
-    operator fun get(id: Int): CoordinateResource? = Coordinate
+    operator fun get(id: Int): Coordinate? = Coordinate
         .findById(id)
-        ?.toResource()
 
-    fun get(ids: List<Int>, page: Long = 0, limit: Int = 0): List<CoordinateResource> =
+    fun get(ids: List<Int>, page: Long = 0, limit: Int = 0): List<Coordinate> =
         Coordinate.find { CoordinateTable.id inList ids }
-            .map { it.toResource() }
+            .toList()
 
-    fun create(coordinates: List<CoordinateResource>) = CoordinateTable
+    fun create(coordinates: List<CoordinateResource>): SizedIterable<Coordinate> {
+
+        return CoordinateTable
             .batchInsert(coordinates) {
                 val rawRouteId = it.routeId
                 // TODO Can I actually write new queries inside this closure?
@@ -31,8 +32,8 @@ object CoordinateDAO {
                 this[CoordinateTable.route] = routeId
                 this[CoordinateTable.createdDate] = it.timestamp
                 this[CoordinateTable.heartRate] = it.heartRate
-            }
-            .map { EntityCreatedResource(it[CoordinateTable.id].value) }
+            }.let { Coordinate.wrapRows(SizedCollection(it)) }
+    }
 
 
     fun update(coordinate: Coordinate) = CoordinateTable.update { coordinate }

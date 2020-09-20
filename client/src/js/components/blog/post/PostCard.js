@@ -10,19 +10,15 @@ export default class PostCard extends Component {
     }
 
     render() {
-        const polyline = L.polyline(
-            this.props.post.route.coordinates.map(coord => L.latLng(coord.lat, coord.lng, coord.altitude)),
-            {color:'red'}
-        );
-
-        console.log(this.props.post.timePosted);
-
         return (
             <div className={css.postFrame}>
                 {
                     this.props.post.route &&
                     <RouteMap
-                        polyline={polyline}
+                        polyline={L.polyline(
+                            this.props.post.route.coordinates.map(coord => L.latLng(coord.lat, coord.lng, coord.altitude)),
+                            {color:'red'}
+                        )}
                         bounds={1}
                         width="100%"
                         height="300px"

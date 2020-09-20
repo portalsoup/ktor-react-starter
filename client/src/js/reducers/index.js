@@ -14,6 +14,7 @@ function rootReducer(state = initialState, action) {
             currentRoute: action.payload
             });
         case GET_POSTS:
+            console.log(action.payload)
             return Object.assign({}, state, {
                 posts: action.payload
             });

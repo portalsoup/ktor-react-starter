@@ -2,10 +2,7 @@
   "hostname": "localhost",
   "server": {
     "publicIP": "127.0.0.1",
-    "publicPort": 8080,
-
-    "adminIP": "0.0.0.0",
-    "adminPort": 8081
+    "publicPort": 8080
   },
   "db": {
     "username": "bikes",

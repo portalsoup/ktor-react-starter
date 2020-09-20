@@ -4,6 +4,8 @@ package com.portalsoup.ktorexposed.core.service
 import com.portalsoup.ktorexposed.core.util.getLogger
 import com.portalsoup.ktorexposed.dao.CoordinateDAO
 import com.portalsoup.ktorexposed.dao.RouteDAO
+import com.portalsoup.ktorexposed.entity.Route
+import com.portalsoup.ktorexposed.entity.toResource
 import com.portalsoup.ktorexposed.resources.CoordinateResource
 import com.portalsoup.ktorexposed.resources.RouteResource
 import io.jenetics.jpx.GPX
@@ -30,26 +32,26 @@ object GPXService {
             val getName = { "${uuid}_$i" }
             transaction {
                 val routeCreated = RouteDAO.create(RouteResource(null, track.name.orElseGet(getName)))
-                log.debug("Route created $routeCreated")
-                track.segments.map { mapAndPersistPoints(routeCreated.id, it) }
-                listOf(RouteDAO[routeCreated.id])
+                track.segments.map { mapAndPersistPoints(routeCreated, it) }
+                listOf(RouteDAO[routeCreated.id.value])
+                    .map { it.toResource() }
             }
         }.flatten()
 
-    fun mapAndPersistPoints(routeId: Int, trackSegment: TrackSegment): List<CoordinateResource> {
-        val points = trackSegment.points.map { this.mapToCoordinate(routeId, it) }
+    fun mapAndPersistPoints(route: Route, trackSegment: TrackSegment): List<CoordinateResource> {
+        val points = trackSegment.points.map { this.mapToCoordinate(route, it) }
         transaction {
             CoordinateDAO.create(points)
         }
         return points
     }
 
-    private fun mapToCoordinate(routeId: Int, wayPoint: WayPoint): CoordinateResource {
+    private fun mapToCoordinate(route: Route, wayPoint: WayPoint): CoordinateResource {
         return CoordinateResource(
             wayPoint.latitude.toFloat(),
             wayPoint.longitude.toFloat(),
             wayPoint.elevation.map { it.toFloat() }.orElse(null),
-            routeId,
+            route.id.value,
             wayPoint.time.map { it.toEpochSecond() }.map{ LocalDateTime.ofEpochSecond(it, 0, ZoneOffset.UTC) }.orElse(LocalDateTime.now()),
             null
         )

@@ -7,7 +7,9 @@ export function getPosts() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-            }
+            },
+            credentials: "include",
+            mode: "cors"
         }).then(response => {
             if (response.ok) {
                 response.json().then(json => {

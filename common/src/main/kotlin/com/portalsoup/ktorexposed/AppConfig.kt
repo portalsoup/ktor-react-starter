@@ -22,9 +22,7 @@ data class Db(
 
 data class Server(
     val publicIP: String,
-    val publicPort: Int,
-    val adminIP: String,
-    val adminPort: Int
+    val publicPort: Int
 )
 
 

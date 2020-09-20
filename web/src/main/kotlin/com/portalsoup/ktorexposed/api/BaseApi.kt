@@ -84,5 +84,6 @@ fun Application.main() {
         healthcheck()
         routes()
         coordinates()
+        blog()
     }
 }

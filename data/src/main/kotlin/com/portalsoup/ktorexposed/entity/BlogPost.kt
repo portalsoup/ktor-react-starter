@@ -25,7 +25,7 @@ class BlogPost(id: EntityID<Int>) : IntEntity(id) {
 
 fun BlogPost.toResource(): BlogPostResource =
     BlogPostResource(
-        id,
+        id.value,
         title,
         body,
         route?.toResource(),
