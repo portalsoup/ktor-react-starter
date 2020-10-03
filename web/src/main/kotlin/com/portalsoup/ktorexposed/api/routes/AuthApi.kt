@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.api.BaseApi
 import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.core.service.UserService
@@ -18,7 +19,7 @@ import io.ktor.sessions.sessions
 import io.ktor.sessions.set
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object AuthApi {
+object AuthApi : BaseApi {
 
     val log = getLogger(javaClass)
 

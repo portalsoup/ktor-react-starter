@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.api.BaseApi
 import com.portalsoup.ktorexposed.core.service.GPXService
 import com.portalsoup.ktorexposed.core.service.RouteService
 import com.portalsoup.ktorexposed.core.util.getLogger
@@ -13,7 +14,7 @@ import io.ktor.response.respond
 import io.ktor.routing.*
 import java.io.File
 
-object RouteApi {
+object RouteApi : BaseApi {
 
     val log = getLogger(javaClass)
 

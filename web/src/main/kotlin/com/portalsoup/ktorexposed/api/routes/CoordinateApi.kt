@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.api.BaseApi
 import com.portalsoup.ktorexposed.core.service.CoordinateService
 import com.portalsoup.ktorexposed.core.util.getLogger
 import com.portalsoup.ktorexposed.resources.CoordinateResource
@@ -12,7 +13,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object CoordinateApi {
+object CoordinateApi : BaseApi {
 
     val log = getLogger(javaClass)
 

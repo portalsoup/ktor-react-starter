@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.api.routes
 
+import com.portalsoup.ktorexposed.api.BaseApi
 import com.portalsoup.ktorexposed.core.service.BlogPostService
 import com.portalsoup.ktorexposed.core.util.getLogger
 import com.portalsoup.ktorexposed.resources.BlogPostResource
@@ -8,7 +9,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-object BlogApi {
+object BlogApi : BaseApi {
 
     val log = getLogger(javaClass)
 
