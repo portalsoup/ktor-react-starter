@@ -1,7 +1,0 @@
-FROM nginx:1.19.1-alpine
-
-VOLUME /client
-
-RUN rm -rf /usr/share/nginx/html
-
-RUN ln -s /client /usr/share/nginx/html

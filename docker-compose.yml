@@ -2,10 +2,8 @@ version: '3'
 services:
   server:
     build:
-      context: .
-      dockerfile: docker/Dockerfile.server
-    volumes:
-    - ./web/build/libs:/tour
+      context: web/
+      dockerfile: Dockerfile.server
     networks:
       - server
       - client
@@ -15,12 +13,12 @@ services:
       - db
   client:
     build:
-      context: .
-      dockerfile: docker/Dockerfile.client
+      context: client/
+      dockerfile: Dockerfile.client
     ports:
       - "80:80"
     volumes:
-      - ./client/build:/client
+      - ./build:/usr/share/nginx/html
     networks:
       - client
   db:

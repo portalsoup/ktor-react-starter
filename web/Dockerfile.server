@@ -2,8 +2,9 @@ FROM openjdk:8-alpine
 
 EXPOSE 8080 8081 5006
 
+COPY ./build/libs/shadow.jar /tour/
+
 WORKDIR /tour
-VOLUME /tour
 
 RUN ls -l
 

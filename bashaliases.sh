@@ -2,22 +2,33 @@
 
 export TOURING_HOME=$(pwd)
 
+function build {
+  cd $TOURING_HOME
+  ./gradlew shadowJar
+  docker-compose build
+}
+
+function cleanBuild {
+  cd $TOURING_HOME
+  ./gradlew shadowJar
+  docker-compose down --no-cache
+}
+
 function start {
   cd $TOURING_HOME
-  ./gradlew build
-  docker-compose -f docker/dev/docker-compose.yml down
-  docker-compose -f docker/dev/docker-compose.yml up -d
+  ./gradlew shadowJar
+  docker-compose down
+  docker-compose up -d
 }
 
 function stop {
   cd $TOURING_HOME
-  ./gradlew build
-  docker-compose -f docker/dev/docker-compose.yml down
+  docker-compose down
 }
 
 function logs {
   cd $TOURING_HOME
-  docker-compose -f docker/dev/docker-compose.yml logs -f
+  docker-compose logs -f
 }
 
 # Attempt to stop all running docker containers
