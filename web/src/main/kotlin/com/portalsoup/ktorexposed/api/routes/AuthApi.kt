@@ -3,6 +3,7 @@ package com.portalsoup.ktorexposed.api.routes
 import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.core.service.UserService
+import com.portalsoup.ktorexposed.core.util.getLogger
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
@@ -17,27 +18,32 @@ import io.ktor.sessions.sessions
 import io.ktor.sessions.set
 import org.jetbrains.exposed.sql.transactions.transaction
 
+object AuthApi {
 
-fun Route.user() {
-    route("") {
-        post("sign-up") {
-            val signupResource: TravelerResource = call.receive()
-            val newUserResource = UserService.signup(signupResource)
-            call.respond(newUserResource)
-        }
+    val log = getLogger(javaClass)
 
-        post("sign-in") {
-            val credentials: TravelerResource = call.receive()
-            val jwt = UserService.signin(credentials)
-            call.sessions.set(jwt)
-            call.respond(HttpStatusCode.OK)
-        }
+    fun Route.user() {
+        route("") {
+            post("sign-up") {
+                val signupResource: TravelerResource = call.receive()
+                val newUserResource = UserService.signup(signupResource)
+                call.respond(newUserResource)
+            }
 
-        authenticate {
-            get("currentUser") {
-                val principal = call.authentication.principal<JwtCookie>() ?: throw RuntimeException("null principal")
-                val currentUser = UserService.currentUser(principal)
-                call.respond(currentUser)
+            post("sign-in") {
+                val credentials: TravelerResource = call.receive()
+                val jwt = UserService.signin(credentials)
+                call.sessions.set(jwt)
+                call.respond(HttpStatusCode.OK)
+            }
+
+            authenticate {
+                get("currentUser") {
+                    val principal =
+                        call.authentication.principal<JwtCookie>() ?: throw RuntimeException("null principal")
+                    val currentUser = UserService.currentUser(principal)
+                    call.respond(currentUser)
+                }
             }
         }
     }

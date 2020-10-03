@@ -1,6 +1,11 @@
 package com.portalsoup.ktorexposed.api
 
-import com.portalsoup.ktorexposed.api.routes.*
+import com.portalsoup.ktorexposed.api.routes.AuthApi.user
+import com.portalsoup.ktorexposed.api.routes.BlogApi.blog
+import com.portalsoup.ktorexposed.api.routes.CoordinateApi.coordinates
+import com.portalsoup.ktorexposed.api.routes.DevApi.dev
+import com.portalsoup.ktorexposed.api.routes.HealthcheckApi.healthcheck
+import com.portalsoup.ktorexposed.api.routes.RouteApi.routes
 import com.portalsoup.ktorexposed.core.util.JwtCookie
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -16,7 +21,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.sessions.*
-import com.portalsoup.ktorexposed.api.routes.coordinates
 
 fun Application.main() {
     // Setup
