@@ -40,10 +40,8 @@ object AuthApi : BaseApi {
 
             authenticate {
                 get("currentUser") {
-                    val principal =
-                        call.authentication.principal<JwtCookie>() ?: throw RuntimeException("null principal")
-                    val currentUser = UserService.currentUser(principal)
-                    call.respond(currentUser)
+                    val user = withIdentity(call) { it }
+                    call.respond(user)
                 }
             }
         }

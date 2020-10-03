@@ -6,6 +6,7 @@ import com.portalsoup.ktorexposed.api.routes.CoordinateApi.coordinates
 import com.portalsoup.ktorexposed.api.routes.DevApi.dev
 import com.portalsoup.ktorexposed.api.routes.HealthcheckApi.healthcheck
 import com.portalsoup.ktorexposed.api.routes.RouteApi.routes
+import com.portalsoup.ktorexposed.core.service.UserService
 import com.portalsoup.ktorexposed.core.util.JwtCookie
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -83,7 +84,7 @@ fun Application.main() {
 
             validate { session: JwtCookie ->
                 println("Validating the session auth \n\n$session\n")
-                session
+                    UserService.currentUser(session)
             }
         }
     }

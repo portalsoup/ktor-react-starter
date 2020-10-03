@@ -2,7 +2,7 @@ package com.portalsoup.ktorexposed.dao
 
 import com.portalsoup.ktorexposed.entity.Traveler
 import com.portalsoup.ktorexposed.entity.TravelerTable
-import com.portalsoup.ktorexposed.entity.toAuthResource
+import com.portalsoup.ktorexposed.entity.toResource
 import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import org.jetbrains.exposed.sql.update
@@ -18,7 +18,7 @@ object TravelerDAO {
 
     fun getWithAuth(id: Int): TravelerResource? = Traveler
         .findById(id)
-        ?.toAuthResource()
+        ?.toResource()
 
 
     fun create(traveler: TravelerPrincipal): Traveler = Traveler.new {
