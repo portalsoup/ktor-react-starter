@@ -2,23 +2,22 @@
 
 export TOURING_HOME=$(pwd)
 
-function start() {
-    cd $TOURING_HOME
-    ./gradlew build && docker-compose down && docker-compose up
+function start {
+  cd $TOURING_HOME
+  ./gradlew build
+  docker-compose -f docker/dev/docker-compose.yml down
+  docker-compose -f docker/dev/docker-compose.yml up -d
 }
 
-function restart() {
-  docker-compose stop
-  docker-compose build
-  docker-compose up
-  docker-compose logs -f
+function stop {
+  cd $TOURING_HOME
+  ./gradlew build
+  docker-compose -f docker/dev/docker-compose.yml down
 }
 
-function restartServer() {
-  docker-compose stop server
-  docker-compose build server
-  docker-compose up -d server
-  docker-compose logs -f
+function logs {
+  cd $TOURING_HOME
+  docker-compose -f docker/dev/docker-compose.yml logs -f
 }
 
 # Attempt to stop all running docker containers
@@ -41,10 +40,15 @@ function dockerVolumeRmAll {
   docker volume rm $(docker volume ls -q)
 }
 
-# Tear down and remove all docker containers, images and volumes
-function dockerDeepClean {
+function dockerNetworkRmAll {
+  docker network rm $(docker network rm -q)
+}
+
+# Obliterate all docker state
+function nukeDocker {
   dockerStopAll
   dockerRmAll
   dockerRmiAll
   dockerVolumeRmAll
+  dockerNetworkRmAll
 }
