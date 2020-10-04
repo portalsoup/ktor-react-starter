@@ -9,6 +9,11 @@ https://gitlab.com/nanodeath/ktor-session-auth-example
 * docker-compose
 
 # Gradle
+
+To build the app. (new)
+
+./gradlew client:copy aftifact
+
 ## Build the app
 Tasks run from the root module cascade into each submodule, and if a task with the
 same name exists, it will invoke alongside the root project.

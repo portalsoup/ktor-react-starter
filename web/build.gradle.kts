@@ -61,8 +61,16 @@ tasks {
     }
 }
 
+tasks.create("artifact") {
+    dependsOn("shadowJar")
+}
+
 tasks {
     build {
         dependsOn(shadowJar)
+    }
+
+    clean {
+        delete("src/main/resources/assets")
     }
 }
