@@ -1,18 +1,16 @@
 tasks.create("deploy") {
-    dependsOn("terraform", "ansible")
+    dependsOn("terraform", "ansible", ":client:copy", ":web:artifact")
 }
 
 tasks.create<Exec>("terraform") {
-    dependsOn(":web:shadowJar")
+    dependsOn(":web:artifact")
     commandLine("echo", "TODO")
 }
 
 tasks.create<Exec>("ansible") {
-    dependsOn(":web:shadowJar")
+    dependsOn(":web:artifact")
     commandLine("echo", "TODO")
 }
-
-childProjects["web"]?.let { logger.info(it.tasks.joinToString(", ") { task -> task.name });it.tasks["shadowJar"] }?.mustRunAfter(":client:copy")
 
 tasks.create<Delete>("clean") {
     delete("build")
