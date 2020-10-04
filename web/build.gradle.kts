@@ -52,6 +52,8 @@ compileTestKotlin.kotlinOptions {
 
 tasks {
     named<ShadowJar>("shadowJar") {
+        dependsOn(":client:copy")
+
         archiveBaseName.set("shadow")
         mergeServiceFiles()
         manifest {

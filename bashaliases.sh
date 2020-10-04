@@ -14,11 +14,14 @@ function cleanBuild {
   docker-compose down --no-cache
 }
 
-function start {
+function deploy {
   cd $TOURING_HOME
-  ./gradlew shadowJar
+
+  ./gradlew clean
+  ./gradlew copy
+  ./gradlew artifact
   docker-compose down
-  docker-compose up -d
+  docker-compose up server
 }
 
 function stop {
