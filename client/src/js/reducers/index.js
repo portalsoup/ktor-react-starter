@@ -19,6 +19,7 @@ function rootReducer(state = initialState, action) {
                 posts: action.payload
             });
         case CURRENT_USER:
+            console.log("Reducing current user")
             return Object.assign({}, state, {
                 currentUser: action.payload
             });

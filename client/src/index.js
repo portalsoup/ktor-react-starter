@@ -1,21 +1,24 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import { Provider } from "react-redux";
 import store from "./js/store/index";
 import TripsContainer from "./js/components/trips/TripsContainer";
 import BlogContainer from "./js/components/blog/BlogContainer";
-import LoginForm from "./js/components/core/auth/LoginForm";
-import SignupForm from "./js/components/core/auth/SignupForm";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import css from "./index.css";
-import CurrentUser from "./js/components/core/CurrentUser";
+import { LoginComponent } from "./js/components/core/auth/LoginComponent";
+import { SignupComponent } from "./js/components/core/auth/SignupComponent";
+import { CurrentUserComponent } from "./js/components/core/auth/CurrentUserComponent";
+import { getPosts } from "./js/actions/BlogActions";
+
+store.dispatch(getPosts())
 
 ReactDOM.render(
     <Provider store={store}>
         <Router>
             <div className={css.globalContainer}>
                 <ul className={css.sidenav}>
-                    <CurrentUser />
+                    <CurrentUserComponent />
                     <li>
                         <Link to="/">Home</Link>
                     </li>
@@ -31,8 +34,8 @@ ReactDOM.render(
                 </ul>
                 <Route exact path="/" component={TripsContainer} />
                 <Route path="/blog" component={BlogContainer} />
-                <Route path="/sign-in" component={LoginForm} />
-                <Route path="/sign-up" component={SignupForm} />
+                <Route path="/sign-in" component={LoginComponent} />
+                <Route path="/sign-up" component={SignupComponent} />
             </div>
         </Router>
     </Provider>,

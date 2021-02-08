@@ -1,12 +1,14 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.api.BaseApi
-import com.portalsoup.ktorexposed.core.util.JwtCookie
+import com.portalsoup.ktorexposed.core.monad.Try
+import com.portalsoup.ktorexposed.core.monad.Try.Failure
+import com.portalsoup.ktorexposed.core.monad.Try.Success
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.core.service.UserService
+import com.portalsoup.ktorexposed.resources.CurrentUserResource
 import io.ktor.application.call
 import io.ktor.auth.authenticate
-import io.ktor.auth.authentication
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
@@ -16,7 +18,6 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import io.ktor.sessions.sessions
 import io.ktor.sessions.set
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object AuthApi : BaseApi {
 
@@ -37,8 +38,11 @@ object AuthApi : BaseApi {
 
             authenticate {
                 get("currentUser") {
-                    val user = withIdentity(call) { it }
-                    call.respond(user)
+                    val maybeUser: Try<CurrentUserResource> = withIdentity(call) { it }
+                    when (maybeUser) {
+                        is Success -> call.respond(maybeUser.data)
+                        is Failure -> call.respond(HttpStatusCode.BadRequest)
+                    }
                 }
             }
         }
