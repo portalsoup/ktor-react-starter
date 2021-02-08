@@ -6,6 +6,7 @@ import com.portalsoup.ktorexposed.entity.TravelerTable
 import com.portalsoup.ktorexposed.resources.CoordinateResource
 import com.portalsoup.ktorexposed.resources.RouteResource
 import com.portalsoup.ktorexposed.resources.TravelerPrincipal
+import com.portalsoup.ktorexposed.resources.TravelerResource
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 
@@ -18,11 +19,17 @@ fun ResultRow.toCoordinate(): CoordinateResource = CoordinateResource(
     this[CoordinateTable.heartRate]
 )
 
-fun ResultRow.toPrincipal(): TravelerPrincipal = TravelerPrincipal(
+fun ResultRow.toTraveler(): TravelerResource = TravelerResource(
     this[TravelerTable.id].value,
     this[TravelerTable.email],
+    null,
     this[TravelerTable.passwordHash],
     this[TravelerTable.passwordSalt]
+)
+
+fun ResultRow.toPrincipal(): TravelerPrincipal = TravelerPrincipal(
+    this[TravelerTable.id].value,
+    this[TravelerTable.email]
 )
 
 fun ResultRow.toRoute(): RouteResource {

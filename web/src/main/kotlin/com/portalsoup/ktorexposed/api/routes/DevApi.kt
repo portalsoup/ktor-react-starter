@@ -2,7 +2,6 @@ package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.api.BaseApi
 import com.portalsoup.ktorexposed.core.service.DevService
-import com.portalsoup.ktorexposed.core.util.getLogger
 import io.ktor.routing.*
 import java.io.InputStream
 
@@ -11,8 +10,6 @@ class GpxReader() : BaseApi {
 }
 
 object DevApi {
-
-    val log = getLogger(javaClass)
 
     fun Route.dev() {
 

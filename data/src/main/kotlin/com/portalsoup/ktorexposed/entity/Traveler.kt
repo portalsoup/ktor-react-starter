@@ -1,5 +1,6 @@
 package com.portalsoup.ktorexposed.entity
 
+import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
@@ -20,8 +21,8 @@ class Traveler(id: EntityID<Int>) : IntEntity(id) {
     var passwordSalt by TravelerTable.passwordSalt
 }
 
-fun Traveler.toResource(): TravelerResource =
-    TravelerResource(
+fun Traveler.toPrincipal(): TravelerPrincipal =
+    TravelerPrincipal(
         id.value,
         email
     )

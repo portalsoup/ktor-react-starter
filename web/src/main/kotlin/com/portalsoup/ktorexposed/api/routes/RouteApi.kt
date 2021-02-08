@@ -3,7 +3,6 @@ package com.portalsoup.ktorexposed.api.routes
 import com.portalsoup.ktorexposed.api.BaseApi
 import com.portalsoup.ktorexposed.core.service.GPXService
 import com.portalsoup.ktorexposed.core.service.RouteService
-import com.portalsoup.ktorexposed.core.util.getLogger
 import com.portalsoup.ktorexposed.resources.RouteResource
 import io.jenetics.jpx.GPX
 import io.ktor.application.call
@@ -15,8 +14,6 @@ import io.ktor.routing.*
 import java.io.File
 
 object RouteApi : BaseApi {
-
-    val log = getLogger(javaClass)
 
     fun Route.routes() {
         route("/route") {

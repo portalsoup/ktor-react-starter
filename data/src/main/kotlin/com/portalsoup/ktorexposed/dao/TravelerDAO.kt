@@ -2,6 +2,7 @@ package com.portalsoup.ktorexposed.dao
 
 import com.portalsoup.ktorexposed.entity.Traveler
 import com.portalsoup.ktorexposed.entity.TravelerTable
+import com.portalsoup.ktorexposed.entity.toPrincipal
 import com.portalsoup.ktorexposed.entity.toResource
 import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.resources.TravelerResource
@@ -16,12 +17,12 @@ object TravelerDAO {
         }.toList()
 
 
-    fun getWithAuth(id: Int): TravelerResource? = Traveler
+    fun getWithAuth(id: Int): TravelerPrincipal? = Traveler
         .findById(id)
-        ?.toResource()
+        ?.toPrincipal()
 
 
-    fun create(traveler: TravelerPrincipal): Traveler = Traveler.new {
+    fun create(traveler: TravelerResource): Traveler = Traveler.new {
         email = traveler.email
         passwordHash = traveler.passwordHash
         passwordSalt = traveler.passwordSalt

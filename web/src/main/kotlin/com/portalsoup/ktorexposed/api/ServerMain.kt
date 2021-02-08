@@ -6,12 +6,9 @@ import com.portalsoup.ktorexposed.api.routes.CoordinateApi.coordinates
 import com.portalsoup.ktorexposed.api.routes.DevApi.dev
 import com.portalsoup.ktorexposed.api.routes.HealthcheckApi.healthcheck
 import com.portalsoup.ktorexposed.api.routes.RouteApi.routes
-import com.portalsoup.ktorexposed.api.routes.StaticApi.assets
 import com.portalsoup.ktorexposed.core.service.UserService
 import com.portalsoup.ktorexposed.core.util.JwtCookie
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
+import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.authentication
 import io.ktor.auth.session
@@ -23,6 +20,7 @@ import io.ktor.gson.gson
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.*
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.sessions.Sessions
@@ -85,18 +83,25 @@ fun Application.main() {
 
             validate { session: JwtCookie ->
                 println("Validating the session auth \n\n$session\n")
-                    UserService.currentUser(session)
+                UserService.currentUser(session)
             }
         }
     }
 
     install(Routing) {
+        // Configure client
+        resources("static")
+        defaultResource("static/index.html")
+
         dev()
         user()
         healthcheck()
         routes()
         coordinates()
         blog()
-        assets()
     }
+}
+
+suspend fun ApplicationCall.respondDefaultHtml() {
+
 }

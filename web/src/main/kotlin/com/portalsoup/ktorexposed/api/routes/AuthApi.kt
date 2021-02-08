@@ -4,7 +4,6 @@ import com.portalsoup.ktorexposed.api.BaseApi
 import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.core.service.UserService
-import com.portalsoup.ktorexposed.core.util.getLogger
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
@@ -20,8 +19,6 @@ import io.ktor.sessions.set
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object AuthApi : BaseApi {
-
-    val log = getLogger(javaClass)
 
     fun Route.user() {
         route("") {

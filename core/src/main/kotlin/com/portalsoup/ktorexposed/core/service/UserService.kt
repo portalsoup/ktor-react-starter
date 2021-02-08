@@ -8,6 +8,7 @@ import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.core.util.JwtUtils
 import com.portalsoup.ktorexposed.core.util.SecurePassword
 import com.portalsoup.ktorexposed.toPrincipal
+import com.portalsoup.ktorexposed.toTraveler
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -20,7 +21,7 @@ object UserService {
         )
         val newTraveler = transaction {
             TravelerDAO.create(
-                TravelerPrincipal(
+                TravelerResource(
                     email = signupResource.email,
                     passwordHash = securePassword.hashPassword(),
                     passwordSalt = securePassword.userSalt
@@ -40,20 +41,24 @@ object UserService {
         return CurrentUserResource(travelerAuth.id, travelerAuth.email)
     }
 
-    fun checkAuth(credentials: TravelerResource): TravelerPrincipal {
+    private fun checkAuth(credentials: TravelerResource): TravelerPrincipal {
         val password = credentials.password ?: throw RuntimeException("Must contain password")
         val rawUser: ResultRow = TravelerTable
             .select { TravelerTable.email eq credentials.email }
             .single()
 
-        val foundUser = rawUser.toPrincipal()
+        // convert to traveler to verify
+        val foundUser = rawUser.toTraveler()
         val generatedHash = SecurePassword(rawPassword = password, userSalt = foundUser.passwordSalt)
 
-        return foundUser.also {
+        foundUser.also {
             if (!generatedHash.hashPassword().contentEquals(it.passwordHash)) {
                 throw AuthException("Wrong password")
             }
         }
+
+        // verification succeeded so return it as principal
+        return rawUser.toPrincipal()
     }
 }
 

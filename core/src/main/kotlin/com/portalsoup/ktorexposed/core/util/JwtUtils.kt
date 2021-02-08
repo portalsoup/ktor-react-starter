@@ -6,18 +6,24 @@ import com.portalsoup.ktorexposed.Config
 import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.dao.TravelerDAO
 import com.portalsoup.ktorexposed.entity.TravelerTable
+import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.toPrincipal
+import com.portalsoup.ktorexposed.utils.Logging
+import com.portalsoup.ktorexposed.utils.getLogger
+import com.portalsoup.ktorexposed.utils.log
 import io.ktor.auth.Principal
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.lang.NullPointerException
 import java.lang.RuntimeException
 import java.util.*
+import java.util.logging.Logger
 
-object JwtUtils {
+
+object JwtUtils: Logging {
 
     private const val secret = "zAP5MBA4B4Ijz0MZaS48"
-//    internal const val issuer = "ktor.io"
+    //    internal const val issuer = "ktor.io"
     private const val validityInMs = 36_000_00 * 10 // 10 hours
     private val algorithm = Algorithm.HMAC512(secret)
 
@@ -32,9 +38,9 @@ object JwtUtils {
         .sign(algorithm)
 
     fun verifyToken(): JWTVerifier = JWT
-            .require(algorithm)
-            .withIssuer(Config.global.hostname)
-            .build()
+        .require(algorithm)
+        .withIssuer(Config.global.hostname)
+        .build()
     /**
      * Calculate the expiration Date based on current time + the given validity
      */
@@ -42,19 +48,16 @@ object JwtUtils {
 
 }
 
-class JwtCookie(val jwt: String): Principal {
+class JwtCookie(val jwt: String): Principal, Logging {
+
     fun unpack(): TravelerPrincipal = transaction {
-        val id = JwtUtils.verifyToken().verify(jwt).getClaim("id").asInt() ?: throw NullPointerException("No id claim found!")
-
-        val foundTraveler = TravelerDAO.getWithAuth(id) ?: throw RuntimeException("No Traveler found")
-
-        foundTraveler
-
-        TravelerTable
-            .select { TravelerTable.id eq id }
-            .single()
-            .toPrincipal()
+        JwtUtils
+            .verifyToken()
+            .verify(jwt)
+            .getClaim("id")
+            .asInt()
+            .also { log().info("unpacking cookie... [$it]") }
+            ?.let { TravelerDAO.getWithAuth(it) }
+            ?: throw RuntimeException("No Traveler found!")
     }
 }
-
-//data class UserPrincipal(val user: TravelerAuth): Principal
