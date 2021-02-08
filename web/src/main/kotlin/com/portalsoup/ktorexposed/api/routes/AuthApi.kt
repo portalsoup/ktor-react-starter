@@ -41,15 +41,14 @@ object AuthApi : BaseApi {
             authenticate {
                 post("sign-out") {
                     val cookieName = call.sessions.findName(JwtCookie::class)
-                    when (withIdentity(call) { it }.also { println("Signing out user $it") }) {
+                    when (withIdentity(call) { it }) {
                         is Success -> call.sessions.clear(cookieName)
                         is Failure -> call.respond(HttpStatusCode.BadRequest)
                     }
                 }
 
                 get("currentUser") {
-                    val maybeUser: Try<CurrentUserResource> = withIdentity(call) { it }
-                    when (maybeUser) {
+                    when (val maybeUser: Try<CurrentUserResource> = withIdentity(call) { it }) {
                         is Success -> call.respond(maybeUser.data)
                         is Failure -> call.respond(HttpStatusCode.BadRequest)
                     }

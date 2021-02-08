@@ -16,7 +16,6 @@ object BlogApi : BaseApi {
         route("/blog") {
             get("/all") {
                 val posts: List<BlogPostResource> = BlogPostService.allBlogPosts()
-                println("Getting posts....")
                 call.respond(posts)
             }
 
