@@ -2,10 +2,12 @@ package com.portalsoup.ktorexposed.dao
 
 import com.portalsoup.ktorexposed.entity.Traveler
 import com.portalsoup.ktorexposed.entity.TravelerTable
+import com.portalsoup.ktorexposed.entity.toPrincipal
 import com.portalsoup.ktorexposed.entity.toResource
 import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import org.jetbrains.exposed.sql.update
+import java.lang.RuntimeException
 
 object TravelerDAO {
     operator fun get(id: Int): Traveler? = Traveler.findById(id)
@@ -16,15 +18,15 @@ object TravelerDAO {
         }.toList()
 
 
-    fun getWithAuth(id: Int): TravelerResource? = Traveler
+    fun getWithAuth(id: Int): TravelerPrincipal? = Traveler
         .findById(id)
-        ?.toResource()
+        ?.toPrincipal()
 
 
-    fun create(traveler: TravelerPrincipal): Traveler = Traveler.new {
+    fun create(traveler: TravelerResource): Traveler = Traveler.new {
         email = traveler.email
-        passwordHash = traveler.passwordHash
-        passwordSalt = traveler.passwordSalt
+        passwordHash = traveler.passwordHash ?: throw RuntimeException("Need a password hash to create user")
+        passwordSalt = traveler.passwordSalt ?: throw RuntimeException("Need a password salt to create user")
     }
 
     fun update(traveler: TravelerResource) = TravelerTable

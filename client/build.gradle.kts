@@ -36,11 +36,11 @@ tasks.create<Copy>("copy") {
     )
 
     outputs.dir(
-        "${rootProject.projectDir}/web/src/main/resources/assets"
+        "${rootProject.projectDir}/web/src/main/resources/static"
     )
 
     from("build")
-    into("${rootProject.projectDir}/web/src/main/resources/assets")
+    into("${rootProject.projectDir}/web/src/main/resources/static")
     include("**/*")
 }
 

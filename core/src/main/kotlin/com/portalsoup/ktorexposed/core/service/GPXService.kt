@@ -1,7 +1,6 @@
 package com.portalsoup.ktorexposed.core.service
 
 
-import com.portalsoup.ktorexposed.core.util.getLogger
 import com.portalsoup.ktorexposed.dao.CoordinateDAO
 import com.portalsoup.ktorexposed.dao.RouteDAO
 import com.portalsoup.ktorexposed.entity.Route
@@ -20,9 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.streams.toList
 
 object GPXService {
-
-    val log = getLogger(GPXService.javaClass)
-
+    
     fun parseGpxInputStream(inputStream: InputStream): GPX = GPX.read(inputStream)
 
     fun importGpx(gpx: GPX): List<RouteResource> = gpx.tracks().toList()

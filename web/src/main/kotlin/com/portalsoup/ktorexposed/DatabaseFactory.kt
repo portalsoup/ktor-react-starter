@@ -1,7 +1,7 @@
 package com.portalsoup.ktorexposed
 
-import com.portalsoup.ktorexposed.core.util.Logging
-import com.portalsoup.ktorexposed.core.util.log
+import com.portalsoup.ktorexposed.utils.Logging
+import com.portalsoup.ktorexposed.utils.log
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway

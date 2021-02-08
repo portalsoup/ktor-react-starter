@@ -1,4 +1,4 @@
-import {GET_POSTS, GET_ROUTE, CURRENT_USER, UPLOAD_GPX} from "../constants/action-types";
+import {GET_POSTS, GET_ROUTE, CURRENT_USER, NO_CURRENT_USER, UPLOAD_GPX} from "../constants/action-types";
 import compose from 'redux'
 
 const initialState = {
@@ -22,6 +22,10 @@ function rootReducer(state = initialState, action) {
             return Object.assign({}, state, {
                 currentUser: action.payload
             });
+        case NO_CURRENT_USER:
+            return Object.assign({}, state, {
+                currentUser: action.payload
+            })
         case UPLOAD_GPX:
             return state
     }

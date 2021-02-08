@@ -1,0 +1,7 @@
+/* The sidebar menu */
+
+.globalContainer {
+    min-height: 100vh;
+    min-width: 50vw;
+    margin: auto;
+}
