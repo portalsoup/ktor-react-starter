@@ -1,6 +1,6 @@
 // import axios from 'axios'; 
 import "regenerator-runtime/runtime";
-import { CURRENT_USER } from "../constants/action-types";
+import { CURRENT_USER, NO_CURRENT_USER } from "../constants/action-types";
 import { getPosts } from "./BlogActions";
 
 export function onSignUp(email, password) {
@@ -38,6 +38,25 @@ export function onLogIn(email, password) {
     }
 }
 
+export function onLogOut() {
+    return (dispatch) => {
+        return fetch(`http://localhost:8080/sign-out`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        }).then(response => {
+            if (response.ok) {
+                console.log("Success")
+            }
+
+            dispatch(getCurrentUser())
+            dispatch(getPosts())
+        })
+    }
+}
+
 export function getCurrentUser() {
     console.log(`getting current user`);
     return (dispatch) => {
@@ -48,12 +67,20 @@ export function getCurrentUser() {
             credentials: 'include',
         }).then(response => {
             if (response.ok) {
-                console.log("About to set state")
                 response.json().then(json => {
+                    console.log(`About to set state with ${JSON.stringify(json)}`)
                     dispatch({
                         type: CURRENT_USER,
                         payload: json
                     });
+                })
+            } else {
+                dispatch({
+                    type: NO_CURRENT_USER,
+                    payload: {
+                        id: undefined,
+                        name: undefined,
+                    }
                 })
             }
         })

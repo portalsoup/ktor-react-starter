@@ -31,7 +31,7 @@ object UserService {
         return EntityCreatedResource(newTraveler.id.value)
     }
 
-    fun signin(credentials: TravelerResource): JwtCookie {
+    fun generateAuthCookie(credentials: TravelerResource): JwtCookie {
         val user = transaction { checkAuth(credentials) }
         return JwtCookie(JwtUtils.makeToken(user))
     }
@@ -49,10 +49,12 @@ object UserService {
 
         // convert to traveler to verify
         val foundUser = rawUser.toTraveler()
-        val generatedHash = SecurePassword(rawPassword = password, userSalt = foundUser.passwordSalt)
+        val salt = foundUser.passwordSalt ?: throw RuntimeException("Salt needed to check auth")
+        val generatedHash = SecurePassword(rawPassword = password, userSalt = salt)
 
         foundUser.also {
-            if (!generatedHash.hashPassword().contentEquals(it.passwordHash)) {
+            val hash = it.passwordHash ?: throw RuntimeException("Hash needed to check auth")
+            if (!generatedHash.hashPassword().contentEquals(hash)) {
                 throw AuthException("Wrong password")
             }
         }

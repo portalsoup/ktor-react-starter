@@ -1,10 +1,8 @@
 import React from "react";
-import { event } from "jquery";
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { onLogIn } from "../../../actions/AuthActions";
 
-
-export const LoginComponent = (props) => {
+export const LoginComponent = () => {
     const dispatch = useDispatch()
 
     const usernameRef = React.createRef()

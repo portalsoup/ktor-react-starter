@@ -6,7 +6,9 @@ import com.portalsoup.ktorexposed.core.monad.Try.Failure
 import com.portalsoup.ktorexposed.core.monad.Try.Success
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.core.service.UserService
+import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.resources.CurrentUserResource
+import com.portalsoup.ktorexposed.resources.TravelerPrincipal
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.http.HttpStatusCode
@@ -31,12 +33,20 @@ object AuthApi : BaseApi {
 
             post("sign-in") {
                 val credentials: TravelerResource = call.receive()
-                val jwt = UserService.signin(credentials)
+                val jwt = UserService.generateAuthCookie(credentials)
                 call.sessions.set(jwt)
                 call.respond(HttpStatusCode.OK)
             }
 
             authenticate {
+                post("sign-out") {
+                    val cookieName = call.sessions.findName(JwtCookie::class)
+                    when (withIdentity(call) { it }.also { println("Signing out user $it") }) {
+                        is Success -> call.sessions.clear(cookieName)
+                        is Failure -> call.respond(HttpStatusCode.BadRequest)
+                    }
+                }
+
                 get("currentUser") {
                     val maybeUser: Try<CurrentUserResource> = withIdentity(call) { it }
                     when (maybeUser) {
