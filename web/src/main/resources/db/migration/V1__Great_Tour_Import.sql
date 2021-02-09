@@ -13,13 +13,13 @@ create table COORDINATE (
     ROUTE bigint,
     CREATEDDATE timestamptz not null,
     HEARTRATE bigint,
-    OWNER bigint
+    OWNER bigint not null
 );
 
 create table ROUTE (
     ID serial primary key,
     name varchar(255) not null,
-    OWNER bigint
+    OWNER bigint not null
 );
 
 create table BLOGPOST (
@@ -28,5 +28,5 @@ create table BLOGPOST (
     BODY text not null,
     ROUTE bigint,
     CREATEDDATE timestamptz not null,
-    OWNER bigint
+    OWNER bigint not null
 );

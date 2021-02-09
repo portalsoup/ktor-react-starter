@@ -1,6 +1,6 @@
 package com.portalsoup.ktorexposed.entity
 
-import com.portalsoup.ktorexposed.resources.BlogPostResource
+import com.portalsoup.ktorexposed.resources.blogpost.BlogPostResource
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
