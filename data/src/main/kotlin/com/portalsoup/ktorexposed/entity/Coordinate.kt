@@ -14,7 +14,7 @@ object CoordinateTable: IntIdTable() {
     val route = reference("route", RouteTable).nullable()
     val createdDate = datetime("createddate")
     val heartRate = long("heartrate").nullable()
-    val owner = reference("traveler", TravelerTable)
+    val owner = reference("owner", TravelerTable)
 }
 
 class Coordinate(id: EntityID<Int>): IntEntity(id) {
@@ -32,5 +32,5 @@ class Coordinate(id: EntityID<Int>): IntEntity(id) {
 }
 
 fun Coordinate.toResource(): CoordinateResource {
-    return CoordinateResource(lat, lng, altitude, route?.id?.value, createdDate, heartRate)
+    return CoordinateResource(owner.toResource(), lat, lng, altitude, route?.id?.value, createdDate, heartRate)
 }

@@ -12,7 +12,7 @@ object BlogPostTable : IntIdTable() {
     val body = text("body")
     val route = reference("route", RouteTable).nullable()
     val timePosted = datetime("createddate")
-    val owner = reference("traveler", TravelerTable)
+    val owner = reference("owner", TravelerTable)
 }
 
 class BlogPost(id: EntityID<Int>) : IntEntity(id) {
@@ -28,6 +28,7 @@ class BlogPost(id: EntityID<Int>) : IntEntity(id) {
 fun BlogPost.toResource(): BlogPostResource =
     BlogPostResource(
         id.value,
+        owner.toResource(),
         title,
         body,
         route?.toResource(),

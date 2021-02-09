@@ -2,10 +2,11 @@ package com.portalsoup.ktorexposed.api
 
 import com.portalsoup.ktorexposed.core.monad.Try
 import com.portalsoup.ktorexposed.resources.CurrentUserResource
+import com.portalsoup.ktorexposed.utils.Logging
 import io.ktor.application.ApplicationCall
 import io.ktor.auth.authentication
 
-interface BaseApi {
+interface BaseApi: Logging {
 
     fun <T> withIdentity(call: ApplicationCall, lambda: (CurrentUserResource) -> T?): Try<T> =
         call.authentication.principal<CurrentUserResource>()

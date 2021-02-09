@@ -10,14 +10,23 @@ import com.portalsoup.ktorexposed.resources.TravelerResource
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.select
 
-fun ResultRow.toCoordinate(): CoordinateResource = CoordinateResource(
-    this[CoordinateTable.lat],
-    this[CoordinateTable.lng],
-    this[CoordinateTable.altitude],
-    this[CoordinateTable.route]?.value,
-    this[CoordinateTable.createdDate],
-    this[CoordinateTable.heartRate]
-)
+fun ResultRow.toCoordinate(): CoordinateResource {
+    val ownerId = this[CoordinateTable.owner]
+    val owner = TravelerTable
+        .select { TravelerTable.id eq ownerId }
+        .first()
+        .toTraveler()
+
+    return CoordinateResource(
+        owner,
+        this[CoordinateTable.lat],
+        this[CoordinateTable.lng],
+        this[CoordinateTable.altitude],
+        this[CoordinateTable.route]?.value,
+        this[CoordinateTable.createdDate],
+        this[CoordinateTable.heartRate]
+    )
+}
 
 fun ResultRow.toTraveler(): TravelerResource = TravelerResource(
     this[TravelerTable.id].value,
@@ -39,8 +48,15 @@ fun ResultRow.toRoute(): RouteResource {
         .asIterable()
         .map { it.toCoordinate() }
 
+    val ownerId = this[CoordinateTable.owner]
+    val owner = TravelerTable
+        .select { TravelerTable.id eq ownerId }
+        .first()
+        .toTraveler()
+
     return RouteResource(
         this[RouteTable.id].value,
+        owner,
         this[RouteTable.name],
         coordinates
     )

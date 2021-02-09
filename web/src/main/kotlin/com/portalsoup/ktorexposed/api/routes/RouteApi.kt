@@ -1,11 +1,16 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.api.BaseApi
+import com.portalsoup.ktorexposed.core.monad.Try
+import com.portalsoup.ktorexposed.core.monad.Try.Failure
+import com.portalsoup.ktorexposed.core.monad.Try.Success
 import com.portalsoup.ktorexposed.core.service.GPXService
 import com.portalsoup.ktorexposed.core.service.RouteService
 import com.portalsoup.ktorexposed.resources.RouteResource
+import com.portalsoup.ktorexposed.resources.toResource
 import io.jenetics.jpx.GPX
 import io.ktor.application.call
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.request.*
@@ -31,25 +36,26 @@ object RouteApi : BaseApi {
                 call.respond(newIds)
             }
 
-            route("/import") {
-                post("/gpx") {
-                    println("Handling import")
-                    call.receiveMultipart()
-                        .forEachPart {
-                            println("in a part $it")
-                            when (it) {
-                                is PartData.FileItem -> {
-                                    println("it is a file")
-                                    val gpx = GPXService.parseGpxInputStream(it.streamProvider())
-                                    println("Got the gpx $gpx")
-                                    GPXService.importGpx(gpx)
-                                    call.respond(HttpStatusCode.OK)
+            authenticate {
+                route("/import") {
+
+                    post("/gpx") {
+                        when (val maybeUser = withIdentity(call) { it }) {
+                            is Success -> call.receiveMultipart()
+                                .forEachPart {
+                                    when (it) {
+                                        is PartData.FileItem -> {
+                                            val gpx = GPXService.parseGpxInputStream(it.streamProvider())
+                                            GPXService.importGpx(gpx, maybeUser.data.toResource())
+                                            call.respond(HttpStatusCode.OK)
+                                        }
+                                        else -> call.respond(HttpStatusCode.BadRequest)
+                                    }
                                 }
-                                is PartData.FormItem -> {
-                                    println("Found it??\n\n%{it.value}\n\n")
-                                }
-                            }
+                            is Failure -> call.respond(HttpStatusCode.NotFound)
                         }
+                    }
+
                 }
             }
         }

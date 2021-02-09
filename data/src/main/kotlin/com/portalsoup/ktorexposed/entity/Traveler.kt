@@ -26,3 +26,10 @@ fun Traveler.toPrincipal(): TravelerPrincipal =
         id.value,
         email
     )
+
+
+fun Traveler.toResource(): TravelerResource =
+    TravelerResource(
+        id.value,
+        email
+    )

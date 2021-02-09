@@ -8,7 +8,7 @@ import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.core.service.UserService
 import com.portalsoup.ktorexposed.core.util.JwtCookie
 import com.portalsoup.ktorexposed.resources.CurrentUserResource
-import com.portalsoup.ktorexposed.resources.TravelerPrincipal
+import com.portalsoup.ktorexposed.utils.log
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.http.HttpStatusCode
@@ -27,8 +27,17 @@ object AuthApi : BaseApi {
         route("") {
             post("sign-up") {
                 val signupResource: TravelerResource = call.receive()
-                val newUserResource = UserService.signup(signupResource)
-                call.respond(newUserResource)
+
+                when (val maybeNewUser = UserService.signup(signupResource)) {
+                    is Success -> {
+                        log().info("New user: ${maybeNewUser.data}")
+                        call.respond(maybeNewUser.data)
+                    }
+                    is Failure -> {
+                        log().warn("Failed to create use ${maybeNewUser.error.message}")
+                        call.respond(HttpStatusCode.BadRequest)
+                    }
+                }
             }
 
             post("sign-in") {

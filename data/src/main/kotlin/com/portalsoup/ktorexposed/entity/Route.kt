@@ -8,7 +8,7 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 object RouteTable : IntIdTable() {
     val name = varchar("name", 255)
-    val owner = reference("traveler", TravelerTable)
+    val owner = reference("owner", TravelerTable)
 }
 
 class Route(id: EntityID<Int>) : IntEntity(id) {
@@ -22,6 +22,7 @@ class Route(id: EntityID<Int>) : IntEntity(id) {
 fun Route.toResource(): RouteResource =
     RouteResource(
         id.value,
+        owner.toResource(),
         name,
         coordinates.map { it.toResource() }
     )

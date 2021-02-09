@@ -17,6 +17,7 @@ object TravelerDAO {
             TravelerTable.id inList ids
         }.toList()
 
+    fun getByEmail(email: String) = Traveler.find { TravelerTable.email eq email }.first()
 
     fun getWithAuth(id: Int): TravelerPrincipal? = Traveler
         .findById(id)
