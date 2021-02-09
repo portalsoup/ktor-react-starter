@@ -2,6 +2,11 @@
 
 export TOURING_HOME=$(pwd)
 
+function dev {
+  docker-compose up -d db
+  ./gradlew client:copy && ./gradlew run
+}
+
 function build {
   cd $TOURING_HOME
   ./gradlew shadowJar

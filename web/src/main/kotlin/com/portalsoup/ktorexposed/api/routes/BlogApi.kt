@@ -1,6 +1,8 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.api.BaseApi
+import com.portalsoup.ktorexposed.core.monad.Try.Failure
+import com.portalsoup.ktorexposed.core.monad.Try.Success
 import com.portalsoup.ktorexposed.core.service.BlogPostService
 import com.portalsoup.ktorexposed.resources.BlogPostResource
 import io.ktor.application.*
@@ -15,7 +17,10 @@ object BlogApi : BaseApi {
     fun Route.blog() {
         route("/blog") {
             get("/all") {
-                val posts: List<BlogPostResource> = BlogPostService.allBlogPosts()
+                val posts = when (val maybeUser = withIdentity(call) { it }) {
+                    is Success -> BlogPostService.allBlogPosts()
+                    is Failure -> BlogPostService.allBlogPosts()
+                }
                 call.respond(posts)
             }
 

@@ -12,6 +12,7 @@ object BlogPostTable : IntIdTable() {
     val body = text("body")
     val route = reference("route", RouteTable).nullable()
     val timePosted = datetime("createddate")
+    val owner = reference("traveler", TravelerTable)
 }
 
 class BlogPost(id: EntityID<Int>) : IntEntity(id) {
@@ -21,6 +22,7 @@ class BlogPost(id: EntityID<Int>) : IntEntity(id) {
     var body by BlogPostTable.body
     var route by Route optionalReferencedOn BlogPostTable.route
     var timePosted by BlogPostTable.timePosted
+    var owner by Traveler referencedOn BlogPostTable.owner
 }
 
 fun BlogPost.toResource(): BlogPostResource =

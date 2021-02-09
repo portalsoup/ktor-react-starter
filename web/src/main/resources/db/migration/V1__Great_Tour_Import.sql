@@ -1,3 +1,10 @@
+create table TRAVELER (
+    ID serial primary key,
+    EMAIL varchar(255) not null,
+    PASSWORDHASH varchar(255) not null,
+    PASSWORDSALT varchar(255) not null
+);
+
 create table COORDINATE (
     ID serial primary key,
     LAT float not null,
@@ -5,12 +12,14 @@ create table COORDINATE (
     ALTITUDE float,
     ROUTE bigint,
     CREATEDDATE timestamptz not null,
-    HEARTRATE bigint
+    HEARTRATE bigint,
+    OWNER bigint
 );
 
 create table ROUTE (
     ID serial primary key,
-    name varchar(255) not null
+    name varchar(255) not null,
+    OWNER bigint
 );
 
 create table BLOGPOST (
@@ -18,5 +27,6 @@ create table BLOGPOST (
     TITLE varchar(255) not null,
     BODY text not null,
     ROUTE bigint,
-    CREATEDDATE timestamptz not null
+    CREATEDDATE timestamptz not null,
+    OWNER bigint
 );
