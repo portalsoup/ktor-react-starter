@@ -1,3 +1,5 @@
+import com.portalsoup.ktorexposed.build.dependencies.*
+
 plugins {
     java
     kotlin("jvm") version "1.3.70"
@@ -13,28 +15,27 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(Dependencies.kotlinStdlib)
 
-    implementation(project(":common"))
+    implementation(project(Dependencies.Subprojects.common))
 
-    implementation("org.postgresql:postgresql:42.2.14")
-    implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
-    implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
-    implementation("org.jetbrains.exposed", "exposed-jdbc", exposedVersion)
-    implementation("org.jetbrains.exposed", "exposed-java-time", exposedVersion)
+    implementation(Dependencies.psql)
+    implementation(Dependencies.exposedCore)
+    implementation(Dependencies.exposedDao)
+    implementation(Dependencies.exposedJavaTime)
+    implementation(Dependencies.exposedJdbc)
 
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-    implementation("io.jenetics:jpx:1.4.0")
-
+    implementation(Dependencies.jpx)
+    implementation(Dependencies.ktorAuthJwt)
 }
 
 val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }
 val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }
 
 flyway {

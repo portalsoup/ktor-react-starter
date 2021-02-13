@@ -1,3 +1,6 @@
+import com.portalsoup.ktorexposed.build.dependencies.Constants
+import com.portalsoup.ktorexposed.build.dependencies.Dependencies
+
 plugins {
     java
     kotlin("jvm") version "1.3.70"
@@ -12,29 +15,30 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect", "1.2.51"))
+    implementation(Dependencies.kotlinStdlib)
+    implementation(Dependencies.kotlinReflect)
 
-    implementation(project(":common"))
-    implementation(project(":data"))
+    implementation(project(Dependencies.Subprojects.common))
+    implementation(project(Dependencies.Subprojects.data))
 
-    implementation("io.jenetics:jpx:1.4.0")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-    implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
-    implementation("org.jetbrains.exposed", "exposed-dao", exposedVersion)
+    implementation(Dependencies.jpx)
+    implementation(Dependencies.ktorNetty)
+    implementation(Dependencies.ktorAuthJwt)
+    implementation(Dependencies.exposedCore)
+    implementation(Dependencies.exposedDao)
 
-    testImplementation("org.testng:testng:7.3.0")
-    testImplementation("com.natpryce:hamkrest:1.7.0.3")
+    // test
+    testImplementation(Dependencies.testng)
+    testImplementation(Dependencies.hamkrest)
 }
 
 val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }
 val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }
 
 tasks.test {

@@ -3,3 +3,5 @@
 /database
 /**/node_modules/
 /**/out/
+
+**/.gradle.properties

@@ -1,3 +1,6 @@
+import com.portalsoup.ktorexposed.build.dependencies.Constants
+import com.portalsoup.ktorexposed.build.dependencies.Dependencies
+
 plugins {
     java
     kotlin("jvm") version "1.3.70"
@@ -11,29 +14,26 @@ repositories {
 }
 
 dependencies {
+    implementation(Dependencies.kotlinStdlib)
+    implementation(Dependencies.kotlinReflect)
 
-    // core
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect", "1.2.51"))
+    implementation(Dependencies.slf4j)
+    implementation(Dependencies.logbackClassic)
+    implementation(Dependencies.logbackCore)
 
-    // logging
-    implementation("org.slf4j:slf4j-api:1.7.30")
-    implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("ch.qos.logback:logback-core:1.2.3")
+    implementation(Dependencies.ktorGson)
+    implementation(Dependencies.ktorAuthJwt)
+    implementation(Dependencies.jpx)
 
-    implementation("io.ktor:ktor-gson:$ktorVersion")
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-    implementation("io.jenetics:jpx:1.4.0")
-
-    testImplementation("org.testng:testng:7.3.0")
-    testImplementation("com.natpryce:hamkrest:1.7.0.3")
+    testImplementation(Dependencies.testng)
+    testImplementation(Dependencies.hamkrest)
 }
 
 val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }
 val compileTestKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }

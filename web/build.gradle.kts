@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.portalsoup.ktorexposed.build.dependencies.*
 
 plugins {
     application
@@ -24,30 +25,30 @@ repositories {
 // try koin for dependency injection
 dependencies {
 
-    implementation(project(":common"))
-    implementation(project(":core"))
+    implementation(project(Dependencies.Subprojects.common))
+    implementation(project(Dependencies.Subprojects.core))
 
-    implementation("io.jenetics:jpx:1.4.0")
-    implementation("org.jetbrains.exposed", "exposed-core", exposedVersion)
-    implementation("com.zaxxer:HikariCP:2.7.8")
-    implementation("org.flywaydb:flyway-core:6.4.0")
+    implementation(Dependencies.jpx)
+    implementation(Dependencies.exposedCore)
+    implementation(Dependencies.hikari)
+    implementation(Dependencies.flywayCore)
 
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-    implementation("io.ktor:ktor-gson:$ktorVersion")
-    implementation("io.ktor:ktor-server-sessions:$ktorVersion")
+    implementation(Dependencies.ktorAuthJwt)
+    implementation(Dependencies.ktorGson)
+    implementation(Dependencies.ktorSeverSessions)
+    implementation(Dependencies.ktorNetty)
 
     // test
-    testImplementation("junit:junit:4.12")
+    testImplementation(Dependencies.junit)
 }
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = Constants.jvmTarget
 }
 
 tasks {
