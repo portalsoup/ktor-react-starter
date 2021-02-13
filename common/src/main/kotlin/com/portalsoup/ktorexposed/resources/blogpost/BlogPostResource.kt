@@ -12,3 +12,9 @@ data class BlogPostResource(
     val route: RouteResource?,
     val timePosted: LocalDateTime = LocalDateTime.now()
 )
+
+data class BlogPostListResource(
+    val blogPosts: List<BlogPostResource>
+)
+
+fun BlogPostResource.toListResource() = BlogPostListResource(listOf(this))

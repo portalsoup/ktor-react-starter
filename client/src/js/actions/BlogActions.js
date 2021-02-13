@@ -24,18 +24,22 @@ export function getPosts() {
 }
 } 
 
-export function createPost(title, body) {
+export function createPost(title, body, gpx) {
+
+    const formData = new FormData()
+    body && formData.append("body", body)
+    title && formData.append("title", title)
+    gpx && formData.append("gpx", gpx)
+
     return async (dispatch) => {
         const response = await fetch("http://localhost:8080/blog/new", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form",
             },
             credentials: "include",
             mode: "cors",
-            body: JSON.stringify({
-                blogPosts: [{title: title, body: body}]
-            })
+            body: formData
         })
 
         if (response.ok) {
