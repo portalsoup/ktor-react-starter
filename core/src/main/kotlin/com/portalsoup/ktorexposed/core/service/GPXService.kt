@@ -30,6 +30,7 @@ object GPXService {
             val uuid = UUID.randomUUID().toString()
             val getName = { "${uuid}_$i" }
             transaction {
+                println("About to create route: \n\troute=[[${owner}]] \n\t${track.name.orElseGet(getName)}")
                 val routeCreated = RouteDAO.create(RouteResource(null, owner, track.name.orElseGet(getName)))
                 track.segments.map { mapAndPersistPoints(routeCreated, it, owner) }
                 listOf(RouteDAO[routeCreated.id.value])

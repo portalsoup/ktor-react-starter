@@ -50,6 +50,7 @@ object BlogApi : BaseApi {
                                 .onSuccess { multipart ->
                                     val maybeNewPost = BlogPostService
                                         .parseMultipartBlogPost(multipart, maybeUser.data.toResource())
+                                    println("\n\n$maybeNewPost\n\n")
 
                                     when (maybeNewPost) {
                                         is Success -> {

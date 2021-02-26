@@ -6,7 +6,7 @@ import { createPost } from "../../../actions/BlogActions";
 export const CreatePostComponent = () => {
     const dispatch = useDispatch()
 
-    const [gpxFile] = useState(undefined)
+    const [gpxFile, setGpxFile] = useState(undefined)
 
     const titleRef = React.createRef()
     const bodyRef = React.createRef()
@@ -19,7 +19,7 @@ export const CreatePostComponent = () => {
     }
 
     const handleUpload = (e) => {
-        gpxFile = e.target.files[0]
+        setGpxFile(e.target.files[0])
     }
 
     return (
@@ -27,7 +27,7 @@ export const CreatePostComponent = () => {
             <form id="createPostForm" onSubmit={handleClick.bind(this)}>
                 <h3>Create new post</h3>
                 Title: <input type="text" ref={titleRef} placeholder="Title" />
-                <input type="file" id="gpxUpload" />
+                <input type="file" id="gpxUpload" onChange={handleUpload.bind(this)} />
                 <input type="submit" value="Save" />
             </form>
             <textarea name="body" ref={bodyRef} form="createPostForm" defaultValue="Post body goes here..."></textarea>

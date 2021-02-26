@@ -14,7 +14,6 @@ export function getPosts() {
     
     if (response.ok) {
         response.json().then(json => {
-            console.log(json);
             dispatch({
                 type: GET_POSTS,
                 payload: json
@@ -34,9 +33,6 @@ export function createPost(title, body, gpx) {
     return async (dispatch) => {
         const response = await fetch("http://localhost:8080/blog/new", {
             method: "POST",
-            headers: {
-                "Content-Type": "multipart/form",
-            },
             credentials: "include",
             mode: "cors",
             body: formData
