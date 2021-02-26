@@ -1,14 +1,12 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.api.BaseApi
-import com.portalsoup.ktorexposed.core.monad.Try
-import com.portalsoup.ktorexposed.core.monad.Try.Failure
-import com.portalsoup.ktorexposed.core.monad.Try.Success
+import com.portalsoup.ktorexposed.core.util.Try.Failure
+import com.portalsoup.ktorexposed.core.util.Try.Success
 import com.portalsoup.ktorexposed.core.service.GPXService
 import com.portalsoup.ktorexposed.core.service.RouteService
 import com.portalsoup.ktorexposed.resources.RouteResource
 import com.portalsoup.ktorexposed.resources.toResource
-import io.jenetics.jpx.GPX
 import io.ktor.application.call
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -16,7 +14,6 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.respond
 import io.ktor.routing.*
-import java.io.File
 
 object RouteApi : BaseApi {
 

@@ -1,9 +1,9 @@
 package com.portalsoup.ktorexposed.api.routes
 
 import com.portalsoup.ktorexposed.api.BaseApi
-import com.portalsoup.ktorexposed.core.monad.Try
-import com.portalsoup.ktorexposed.core.monad.Try.Failure
-import com.portalsoup.ktorexposed.core.monad.Try.Success
+import com.portalsoup.ktorexposed.core.util.Try
+import com.portalsoup.ktorexposed.core.util.Try.Failure
+import com.portalsoup.ktorexposed.core.util.Try.Success
 import com.portalsoup.ktorexposed.resources.TravelerResource
 import com.portalsoup.ktorexposed.core.service.UserService
 import com.portalsoup.ktorexposed.core.util.JwtCookie

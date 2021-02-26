@@ -1,5 +1,7 @@
 package com.portalsoup.ktorexposed.core.util
 
+import com.portalsoup.ktorexposed.core.util.Try.Failure
+import com.portalsoup.ktorexposed.core.util.Try.Success
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
@@ -20,7 +22,18 @@ class SecurePassword(
         }
     }
 
-    fun hashPassword(): String {
+    fun hashPassword(): String = when (
+        val result = Try.catching {
+            PBEKeySpec(rawPassword.toCharArray(), userSalt.toByteArray(), 10, 32)
+                .let { SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512").generateSecret(it) }
+                .let { DatatypeConverter.printHexBinary(it.encoded) }
+        }
+    ) {
+        is Success -> result.data
+        is Failure -> throw result.error
+    }
+
+    fun hashPassword2(): String {
         try {
             val keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
             val spec = PBEKeySpec(rawPassword.toCharArray(), userSalt.toByteArray(), 10, 32)

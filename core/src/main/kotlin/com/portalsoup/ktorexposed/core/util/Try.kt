@@ -1,4 +1,4 @@
-package com.portalsoup.ktorexposed.core.monad
+package com.portalsoup.ktorexposed.core.util
 
 import java.lang.NullPointerException
 
@@ -14,6 +14,10 @@ import java.lang.NullPointerException
 sealed class Try<out T> {
     data class Success<out T>(val data: T): Try<T>()
     data class Failure(val error: Throwable): Try<Nothing>()
+
+    companion object {
+        fun <R> catching(block: () -> R): Try<R> = runCatching(block).toTry()
+    }
 
     fun isSuccess(): Boolean = when (this) {
         is Success -> true
@@ -46,3 +50,6 @@ sealed class Try<out T> {
         is Failure -> Failure(error)
     }
 }
+
+fun <T> Result<T>.toTry(): Try<T> =
+    getOrNull()?.let { Try.Success(it) } ?: Try.Failure(exceptionOrNull() ?: NullPointerException())

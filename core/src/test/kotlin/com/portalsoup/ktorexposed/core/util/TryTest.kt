@@ -1,11 +1,9 @@
-package com.portalsoup.ktorexposed.core.monad
+package com.portalsoup.ktorexposed.core.util
 
-import com.natpryce.hamkrest.Matcher
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import com.natpryce.hamkrest.hasSize
-import com.portalsoup.ktorexposed.core.monad.Try.Failure
-import com.portalsoup.ktorexposed.core.monad.Try.Success
+import com.portalsoup.ktorexposed.core.util.Try.Failure
+import com.portalsoup.ktorexposed.core.util.Try.Success
 import com.portalsoup.ktorexposed.core.test.ExpectedException
 import com.portalsoup.ktorexposed.core.test.Matchers.isTryFailure
 import com.portalsoup.ktorexposed.core.test.Matchers.isTrySuccess

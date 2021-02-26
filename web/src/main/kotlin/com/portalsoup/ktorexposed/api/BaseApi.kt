@@ -1,6 +1,6 @@
 package com.portalsoup.ktorexposed.api
 
-import com.portalsoup.ktorexposed.core.monad.Try
+import com.portalsoup.ktorexposed.core.util.Try
 import com.portalsoup.ktorexposed.resources.CurrentUserResource
 import com.portalsoup.ktorexposed.utils.Logging
 import io.ktor.application.ApplicationCall

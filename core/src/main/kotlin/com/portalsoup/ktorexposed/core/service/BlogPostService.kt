@@ -1,6 +1,6 @@
 package com.portalsoup.ktorexposed.core.service
 
-import com.portalsoup.ktorexposed.core.monad.Try
+import com.portalsoup.ktorexposed.core.util.Try
 import com.portalsoup.ktorexposed.dao.BlogPostDAO
 import com.portalsoup.ktorexposed.entity.BlogPost
 import com.portalsoup.ktorexposed.entity.BlogPostTable
@@ -8,11 +8,7 @@ import com.portalsoup.ktorexposed.entity.toResource
 import com.portalsoup.ktorexposed.resources.*
 import com.portalsoup.ktorexposed.resources.blogpost.BlogPostResource
 import com.portalsoup.ktorexposed.resources.blogpost.BlogPostListResource
-import com.portalsoup.ktorexposed.resources.blogpost.toListResource
-import io.ktor.application.*
-import io.ktor.http.*
 import io.ktor.http.content.*
-import io.ktor.response.*
 import org.jetbrains.exposed.sql.SizedCollection
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction

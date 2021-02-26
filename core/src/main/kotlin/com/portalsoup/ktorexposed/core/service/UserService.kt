@@ -1,6 +1,6 @@
 package com.portalsoup.ktorexposed.core.service
 
-import com.portalsoup.ktorexposed.core.monad.Try
+import com.portalsoup.ktorexposed.core.util.Try
 import com.portalsoup.ktorexposed.resources.*
 import com.portalsoup.ktorexposed.dao.TravelerDAO
 import com.portalsoup.ktorexposed.entity.TravelerTable
