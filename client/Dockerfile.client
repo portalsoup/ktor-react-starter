@@ -1,5 +1,3 @@
-FROM nginx:1.19.1-alpine
+FROM httpd:2.4-alpine
 
-VOLUME /usr/share/nginx/html
-
-RUN ls -l /usr/share/nginx/html
+VOLUME ["/public-html/"]

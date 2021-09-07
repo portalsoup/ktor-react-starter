@@ -15,6 +15,8 @@ object Versions {
     const val junit = "4.12"
     const val testng = "7.3.0"
     const val hamkrest = "1.7.0.3"
+
+    const val jaxb = "2.3.3"
 }
 
 object Dependencies {
@@ -44,7 +46,8 @@ object Dependencies {
 
     val psql = "org.postgresql:postgresql:${Versions.psql}"
 
-    val slf4j = "org.slf4j:slf4j-api:${Versions.slf4j}"
+    val slf4jApi = "org.slf4j:slf4j-api:${Versions.slf4j}"
+    val slf4jSimple = "org.slf4j:slf4j-simple:${Versions.slf4j}"
     val logbackCore = "ch.qos.logback:logback-classic:${Versions.logback}"
     val logbackClassic = "ch.qos.logback:logback-core:${Versions.logback}"
 
@@ -52,5 +55,7 @@ object Dependencies {
     val junit = "junit:junit:${Versions.junit}"
     val testng = "org.testng:testng:${Versions.testng}"
     val hamkrest = "com.natpryce:hamkrest:${Versions.hamkrest}"
+
+    val jaxb = "jakarta.xml.bind:jakarta.xml.bind-api:${Versions.jaxb}"
 
 }

@@ -12,13 +12,11 @@ services:
     depends_on:
       - db
   client:
-    build:
-      context: client/
-      dockerfile: Dockerfile.client
+    image: httpd:2.4-alpine
     ports:
       - "80:80"
     volumes:
-      - ./build:/usr/share/nginx/html
+      - ./client/build:/usr/local/apache2/htdocs/
     networks:
       - client
   db:
@@ -28,20 +26,12 @@ services:
     volumes:
       - vdata:/var/lib/postgresql
     environment:
-      POSTGRES_USER: bikes
-      POSTGRES_PASSWORD: tour
+      POSTGRES_USER: hello
+      POSTGRES_PASSWORD: world
       POSTGRES_DB: pgdb
     restart: always
     networks:
       - server
-#  pgadmin:
-#    image: dpage/pgadmin4
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: someone@notreal.com
-#      PGADMIN_DEFAULT_PASSWORD: oohsosecure
-#      PGADMIN_LISTEN_PORT: 81
-#    depends_on:
-#      - db
 volumes:
   vdata: {}
 networks:

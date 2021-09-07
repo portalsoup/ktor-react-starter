@@ -12,7 +12,7 @@ import javax.xml.bind.DatatypeConverter
 class SecurePassword(
     private val rawPassword: String,
     val userSalt: String = generateSalt(32),
-    private val appSalt: ByteArray = "iAmAbAdApPsAlT".toByteArray()
+    private val appSalt: ByteArray = "iamabadappsalt".toByteArray()
 ) {
     companion object {
         fun generateSalt(length: Int): String {

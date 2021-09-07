@@ -2,22 +2,13 @@ package com.portalsoup.ktorexposed.core.util
 
 import com.auth0.jwt.*
 import com.auth0.jwt.algorithms.*
-import com.portalsoup.ktorexposed.Config
-import com.portalsoup.ktorexposed.resources.TravelerPrincipal
-import com.portalsoup.ktorexposed.dao.TravelerDAO
-import com.portalsoup.ktorexposed.entity.TravelerTable
-import com.portalsoup.ktorexposed.resources.TravelerResource
-import com.portalsoup.ktorexposed.toPrincipal
-import com.portalsoup.ktorexposed.utils.Logging
-import com.portalsoup.ktorexposed.utils.getLogger
-import com.portalsoup.ktorexposed.utils.log
+import com.portalsoup.ktorexposed.core.Config
+import com.portalsoup.ktorexposed.core.resources.UserPrincipal
+import com.portalsoup.ktorexposed.core.data.dao.UserDAO
 import io.ktor.auth.Principal
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.lang.NullPointerException
 import java.lang.RuntimeException
 import java.util.*
-import java.util.logging.Logger
 
 
 object JwtUtils: Logging {
@@ -30,7 +21,7 @@ object JwtUtils: Logging {
     /**
      * Produce a token for this combination of User and Account
      */
-    fun makeToken(user: TravelerPrincipal): String = JWT.create()
+    fun makeToken(user: UserPrincipal): String = JWT.create()
 //        .withSubject("Authentication")
         .withIssuer(Config.global.hostname)
         .withClaim("id", user.id)
@@ -50,14 +41,14 @@ object JwtUtils: Logging {
 
 class JwtCookie(val jwt: String): Principal, Logging {
 
-    fun unpack(): TravelerPrincipal = transaction {
+    fun unpack(): UserPrincipal = transaction {
         JwtUtils
             .verifyToken()
             .verify(jwt)
             .getClaim("id")
             .asInt()
             .also { log().info("unpacking cookie... [$it]") }
-            ?.let { TravelerDAO.getWithAuth(it) }
+            ?.let { UserDAO.getAsPrincipal(it) }
             ?: throw RuntimeException("No Traveler found!")
     }
 }

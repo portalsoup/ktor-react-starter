@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom";
 
 import css from "./NavComponent.css";
-import { getPosts } from "../../actions/BlogActions";
 import { getCurrentUser } from "../../actions/AuthActions";
 import { LogoutButtonComponent } from "./auth/LogoutButtonComponent"
 
@@ -11,7 +10,6 @@ export const NavComponent = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getPosts())
         dispatch(getCurrentUser())
     }, [])
 
@@ -20,9 +18,6 @@ export const NavComponent = () => {
                     
                     <li>
                         <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/blog">Blog</Link>
                     </li>
                     <li>
                         <Link to="/sign-up">Sign-up</Link>
@@ -36,9 +31,8 @@ const LoginButton = (props) => {
     console.log(`Current user ${props.currentUser}`)
     const loggedIn = 
     <div>
-        <label>{props.currentUser}</label>
-        <LogoutButtonComponent></LogoutButtonComponent>
-        </div>
+        <LogoutButtonComponent name={props.currentUser}></LogoutButtonComponent>
+    </div>
 
     const loggedOut = <li><Link to="/sign-in">Login</Link></li>
     

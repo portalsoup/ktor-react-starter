@@ -1,6 +1,5 @@
 package com.portalsoup.ktorexposed.core.util
 
-import com.portalsoup.ktorexposed.utils.getLogger
 import java.lang.Exception
 import java.lang.RuntimeException
 

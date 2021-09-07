@@ -17,15 +17,21 @@ repositories {
 dependencies {
     implementation(Dependencies.kotlinStdlib)
     implementation(Dependencies.kotlinReflect)
-
-    implementation(project(Dependencies.Subprojects.common))
-    implementation(project(Dependencies.Subprojects.data))
+    implementation(Dependencies.slf4jApi)
+    implementation(Dependencies.slf4jSimple)
 
     implementation(Dependencies.jpx)
     implementation(Dependencies.ktorNetty)
     implementation(Dependencies.ktorAuthJwt)
+    implementation(Dependencies.ktorGson)
+
+    implementation(Dependencies.psql)
+    implementation(Dependencies.exposedJavaTime)
+    implementation(Dependencies.exposedJdbc)
     implementation(Dependencies.exposedCore)
     implementation(Dependencies.exposedDao)
+
+    implementation(Dependencies.jaxb)
 
     // test
     testImplementation(Dependencies.testng)

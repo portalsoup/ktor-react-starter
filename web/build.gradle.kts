@@ -14,7 +14,7 @@ val exposedVersion: String by rootProject
 val ktorVersion: String by rootProject
 
 application {
-    mainClassName = "com.portalsoup.ktorexposed.AppKt"
+    mainClassName = "com.portalsoup.ktorreactstart.AppKt"
 }
 
 repositories {
@@ -24,10 +24,10 @@ repositories {
 
 // try koin for dependency injection
 dependencies {
-
-    implementation(project(Dependencies.Subprojects.common))
     implementation(project(Dependencies.Subprojects.core))
 
+    implementation(Dependencies.slf4jApi)
+    implementation(Dependencies.slf4jSimple)
     implementation(Dependencies.jpx)
     implementation(Dependencies.exposedCore)
     implementation(Dependencies.hikari)
@@ -74,6 +74,6 @@ tasks {
     }
 
     clean {
-        delete("src/main/resources/assets")
+        delete("src/main/resources/static")
     }
 }

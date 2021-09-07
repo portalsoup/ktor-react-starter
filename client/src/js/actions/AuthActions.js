@@ -1,7 +1,6 @@
 // import axios from 'axios'; 
 import "regenerator-runtime/runtime";
 import { CURRENT_USER, NO_CURRENT_USER } from "../constants/action-types";
-import { getPosts } from "./BlogActions";
 
 export function onSignUp(email, password) {
     return async (dispatch) => {
@@ -32,7 +31,6 @@ export function onLogIn(email, password) {
         console.log("Success");
     }
     dispatch(getCurrentUser())
-    dispatch(getPosts())
 }
 }
 

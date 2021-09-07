@@ -5,8 +5,8 @@
     "publicPort": 8080
   },
   "db": {
-    "username": "bikes",
-    "password": "tour",
+    "username": "hello",
+    "password": "world",
     "jdbcUrl": "jdbc:postgresql://localhost/pgdb",
     "driverClassName": "org.postgresql.Driver",
     "isAutoCommit": true,

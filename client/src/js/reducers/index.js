@@ -9,19 +9,6 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_ROUTE:
-            return Object.assign({}, state, {
-            currentRoute: action.payload
-            });
-        case GET_POSTS:
-            console.log(action.payload)
-            return Object.assign({}, state, {
-                posts: action.payload
-            });
-        case CREATE_POST:
-            return Object.assign({}, state, {
-                
-            })
         case CURRENT_USER:
             return Object.assign({}, state, {
                 currentUser: action.payload
@@ -30,8 +17,6 @@ function rootReducer(state = initialState, action) {
             return Object.assign({}, state, {
                 currentUser: action.payload
             })
-        case UPLOAD_GPX:
-            return state
     }
     return state;
 }
