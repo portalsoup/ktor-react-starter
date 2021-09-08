@@ -44,7 +44,7 @@ To start the app.  Only the web and client modules talk on the network.
 
 
 # Gradle Modules
-The project consists of 5 modules that each contain a different app layer.
+The project consists of 3 modules that each contain a different app layer.
 
 ## core
 The core module contains core business logic and acts as the intermediary layer
@@ -80,8 +80,4 @@ that follows the format `V#__Simple_Description.sql` where V# is the next increm
 number in the sequence consistent with all the other migration files.  This file should
 be a valid postgres script.
 
-For example: `V1__Add_Traveler_Table.sql` 
-
-
-
-# TODO
+For example: `V1__Add_Traveler_Table.sql`
