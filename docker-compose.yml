@@ -1,16 +1,5 @@
 version: '3'
 services:
-  server:
-    build:
-      context: web/
-      dockerfile: Dockerfile.server
-    networks:
-      - server
-      - client
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
   client:
     image: httpd:2.4-alpine
     ports:

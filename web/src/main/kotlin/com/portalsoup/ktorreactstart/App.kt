@@ -7,7 +7,7 @@ import io.ktor.server.netty.Netty
 fun main(args: Array<String>) {
 
     // TODO This go on coroutine?
-    Retrier("database initialization") {
+    Retrier("Initializing database") {
         DatabaseFactory.init()
     }
     embeddedServer(Netty, commandLineEnvironment(args)).start(wait = true)

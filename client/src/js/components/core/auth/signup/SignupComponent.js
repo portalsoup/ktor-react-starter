@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux"
-import { onSignUp } from "../../../actions/AuthActions";
+import { onSignUp } from "../../../../actions/AuthActions";
 
 
 export const SignupComponent = (props) => {

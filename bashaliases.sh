@@ -2,21 +2,16 @@
 
 export TOURING_HOME=$(pwd)
 
+# Run the app locally with the client and db served from docker
 function dev {
-  docker-compose up -d db
-  ./gradlew client:copy && ./gradlew run
+  docker-compose up -d
+  ./gradlew run
 }
 
 function build {
   cd $TOURING_HOME
   ./gradlew shadowJar
   docker-compose build
-}
-
-function cleanBuild {
-  cd $TOURING_HOME
-  ./gradlew shadowJar
-  docker-compose down --no-cache
 }
 
 function deploy {
@@ -32,11 +27,6 @@ function deploy {
 function stop {
   cd $TOURING_HOME
   docker-compose down
-}
-
-function logs {
-  cd $TOURING_HOME
-  docker-compose logs -f
 }
 
 # Attempt to stop all running docker containers

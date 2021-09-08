@@ -3,11 +3,12 @@ package com.portalsoup.ktorreactstart
 import com.portalsoup.ktorexposed.core.AppConfig
 import com.portalsoup.ktorexposed.core.Config
 import com.portalsoup.ktorexposed.core.util.Logging
+import com.portalsoup.ktorexposed.core.util.Retrier
+import com.portalsoup.ktorexposed.core.util.RetryConfig
 import com.portalsoup.ktorexposed.core.util.log
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
-import org.flywaydb.core.api.FlywayException
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -17,7 +18,7 @@ object DatabaseFactory: Logging {
         val config = Config.global
         log().info("Beginning initialization!")
         val flyway = Flyway.configure().dataSource(config.db.jdbcUrl, config.db.username, config.db.password).load()
-        migrateFlyway(flyway)
+        runFlywayMigrations(flyway)
 
         Database.connect(hikari(config))
         log().info("App initialization complete!")
@@ -39,27 +40,27 @@ object DatabaseFactory: Logging {
         return HikariDataSource(hikariConfig)
     }
 
-    fun migrateFlyway(flyway: Flyway, runAgain: Boolean = true) {
+    fun runFlywayMigrations(flyway: Flyway) {
         log().info("Performing data migrations...")
-        try {
 
-            when (val migrationCount = flyway.migrate()) {
-                0 -> "No migrations ran"
-                else -> "Ran $migrationCount migrations"
-            }.also {
-                log().info(it)
-            }
-
-            flyway.validate()
-        } catch (e: FlywayException) {
-            log().info("An error occurred during migrations", e)
+        kotlin.runCatching {
+            flywayMigrate(flyway)
+        }.recover {
             flyway.repair()
-            if (runAgain) {
-                migrateFlyway(flyway, false)
-            } else {
-                throw e
+            Retrier("Flyway migration failed, retrying...", RetryConfig.once()) {
+                flywayMigrate(flyway)
             }
-        }
+        }.onFailure { throw it }
     }
 
+    private fun flywayMigrate(flyway: Flyway) {
+        when (val migrationCount = flyway.migrate()) {
+            0 -> "No migrations ran"
+            else -> "Ran $migrationCount migrations"
+        }.also {
+            log().info(it)
+        }
+
+        flyway.validate()
+    }
 }

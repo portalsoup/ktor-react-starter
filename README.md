@@ -10,10 +10,6 @@ https://gitlab.com/nanodeath/ktor-session-auth-example
 
 # Gradle
 
-To build the app. (new)
-
-./gradlew client:copy aftifact
-
 ## Build the app
 Tasks run from the root module cascade into each submodule, and if a task with the
 same name exists, it will invoke alongside the root project.
@@ -22,9 +18,9 @@ For example, to build the entire project
     
     ./gradlew build
     
-To build a specific module only, then use of \[`client`, `common`, `core`, `data`, `web`\]
+To build a specific module only, then use one of [`client`, `core`, `web`]
 
-    ./gradlew common:build
+    ./gradlew client:build
 
 ## Run the app
 In the root of the repository, run
@@ -32,11 +28,14 @@ In the root of the repository, run
     $ ./gradlew build
 
 This will produce a server artifact, located in the [web](web/build/libs/shadow.jar) module, and 
-a client bundle.
+a client bundle.  The backend runs from gradle directly and will include the current build of the 
+client.  The docker-compose runs the app's database, as well as npm to serve the client code using 
+the current bundle, which, when rebuilt will reflect changes using a page refresh
 
 Then, run
 
     $ docker-compose up
+    $ ./gradlew run
     
 To start the app.  Only the web and client modules talk on the network.
 
@@ -46,16 +45,6 @@ To start the app.  Only the web and client modules talk on the network.
 
 # Gradle Modules
 The project consists of 5 modules that each contain a different app layer.
-
-## data
-The data module contains all the definitions for the postgres database.  This 
-includes table definitions, entities and DAOs.  Database operations should be defined
-here, but should not create or handle any sql transactions.  
-
-## common
-The common module contains data classes and other common definitions to be shared
-between all other kotlin modules.  Business logic generally should not go here.
-Common should not depend on any other module.
 
 ## core
 The core module contains core business logic and acts as the intermediary layer
@@ -68,16 +57,13 @@ resources are for the app and libraries such as ktor and flyway
 
 ## client
 The only module that isn't kotlin, this module contains the ReactJS frontend which
-is to be intended to be served using nginx.  client is built using webpack and can
+is to be intended to be served using httpd.  client is built using webpack and can
 be run using npm scripts.
 
     npm run build # bundle the client code with assets in client/build
     npm run watch # listens for changes in source files and auto-builds
     
 client can be built from gradle using the task `build`, which runs `npm run build` under the hood
-
-This image illustrates the dependencies between modules
-![](docs/modules.jpeg)
 
 
 # Data migrations
