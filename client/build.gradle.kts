@@ -9,17 +9,13 @@ tasks["npmInstall"].let {
         "webpack.config.js"
     )
 
-    it.outputs.dir(
-        "node_modules"
-    )
+    it.outputs.dir("node_modules")
 }
 
 tasks.create<com.moowork.gradle.node.task.NodeTask>("bundle") {
     dependsOn("npmInstall")
 
-    inputs.dir(
-        "$projectDir/src"
-    )
+    inputs.dir("$projectDir/src")
 
     outputs.dir("$projectDir/build")
 
@@ -31,13 +27,9 @@ tasks.create<com.moowork.gradle.node.task.NodeTask>("bundle") {
 tasks.create<Copy>("copy") {
     dependsOn("bundle")
 
-    inputs.dir(
-        "$projectDir/build"
-    )
+    inputs.dir("$projectDir/build")
 
-    outputs.dir(
-        "${rootProject.projectDir}/web/src/main/resources/static"
-    )
+    outputs.dir("${rootProject.projectDir}/web/src/main/resources/static")
 
     from("build")
     into("${rootProject.projectDir}/web/src/main/resources/static")

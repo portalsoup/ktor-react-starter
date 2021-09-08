@@ -1,4 +1,4 @@
-https://gitlab.com/nanodeath/ktor-session-auth-example
+####A template full stack web application with cookie-based jwt authentication and backing postgresql
 
 # Prerequisites
 
