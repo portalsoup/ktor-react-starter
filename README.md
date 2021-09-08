@@ -1,4 +1,4 @@
-####A template full stack web application with cookie-based jwt authentication and backing postgresql
+A template full stack web application with cookie-based jwt authentication and backing postgresql
 
 # Prerequisites
 
